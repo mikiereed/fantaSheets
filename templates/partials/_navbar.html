@@ -26,7 +26,7 @@
             <ul class="navbar-nav ml-auto">
                 {% if request.user.is_authenticated %}
                     <li class="nav-item mr-3">        
-                        <a class="nav-link" href="{% url "logout" %}">
+                        <a class="nav-link" href="{% url "edit" %}">
                             <i class="fas fa-user-edit"></i>
                             {{ request.user.username }}
                         </a>
