@@ -98,6 +98,7 @@ class LeagueSettings(models.Model):
 
     class Meta:
         ordering = ('title',)
+        verbose_name_plural = "League Settings"
 
-    def _str_(self):
+    def __str__(self):
         return self.title
