@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import LeagueSettings
 
-# Register your models here.
+
+@admin.register(LeagueSettings)
+class LeagueSettingsAdmin(admin.ModelAdmin):
+    list_display = ('owner', 'title', 'league_hosting_site')
