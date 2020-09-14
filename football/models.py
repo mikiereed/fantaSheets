@@ -9,8 +9,7 @@ class LeagueSettings(models.Model):
         ('other', 'Other'),
     )
     owner = models.ForeignKey(User,
-                              on_delete=models.CASCADE,
-                              related_name='league_settings')
+                              on_delete=models.CASCADE,)
     league_hosting_site = models.CharField(max_length=20, choices=LEAGUE_SITES)
     title = models.CharField(max_length=50)
     number_of_teams = models.IntegerField()
@@ -70,6 +69,7 @@ class LeagueSettings(models.Model):
     dst_interception_return_touchdowns = models.FloatField()
     dst_fumble_return_touchdowns = models.FloatField()
     dst_blocked_punt_or_field_goal_return_touchdowns = models.FloatField()
+    dst_extra_points_returned = models.FloatField()
     dst_sacks = models.FloatField()
     dst_blocked_punt_point_after_touchdown_field_goal = models.FloatField()
     dst_interceptions = models.FloatField()
@@ -79,6 +79,9 @@ class LeagueSettings(models.Model):
     dst_1_to_6_points_allowed = models.FloatField()
     dst_7_to_13_points_allowed = models.FloatField()
     dst_14_to_17_points_allowed = models.FloatField()
+    dst_14_to_20_points_allowed = models.FloatField()
+    dst_18_to_21_points_allowed = models.FloatField()
+    dst_21_to_27_points_allowed = models.FloatField()
     dst_22_to_27_points_allowed = models.FloatField()
     dst_28_to_34_points_allowed = models.FloatField()
     dst_35_to_45_points_allowed = models.FloatField()
