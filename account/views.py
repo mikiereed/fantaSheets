@@ -15,9 +15,14 @@ def register(request):
                 user_form.cleaned_data['password'])
             # Save the User object
             new_user.save()
+            messages.success(
+                request, 'Registration Successful, Please Login')
             return render(request,
-                          'registration/register_done.html',
+                          'registration/login.html',
                           {'new_user': new_user})
+        else:
+            messages.error(request, user_form.errors)
+            print(user_form.errors)
     else:
         user_form = UserRegistrationForm()
     return render(request,
