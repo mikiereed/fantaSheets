@@ -36,9 +36,10 @@ def edit(request):
                                  data=request.POST)
         if user_form.is_valid():
             user_form.save()
-        messages.success(request, 'Account Updated Successfully')
+            messages.success(request, 'Account Updated Successfully')
+        else:
+            messages.error(request, user_form.errors)
     else:
-        messages.error(request, user_form.errors)
         user_form = UserEditForm(instance=request.user)
     return render(request,
                   'registration/edit.html',

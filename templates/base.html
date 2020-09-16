@@ -8,12 +8,12 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.css'%}">
     <link rel="stylesheet" href="{% static 'css/style.css'%}">
     <link rel="stylesheet" href="{% static 'css/lightbox.min.css'%}">
-    <title>fantaSheets</title>
+    <title>fantaSheets {% block title %}{% endblock title %}</title>
 </head>
 <body>
     {% include 'partials/_navbar.html' %}
 
-    {% block content %} {% endblock %}
+    {% block content %} {% endblock content %}
 
     {% include 'partials/_footer.html' %}
 
