@@ -16,7 +16,7 @@
               <form action="{% url 'create' %}" method="POST">
                 {% csrf_token %}
                 {% for field in league_settings_form %}
-                  <div class="form-group">
+                  <div class="form-group {{ field.name|slice:':4' }}">
                       {{ field.errors }}
                       {{ field.label_tag }} {{ field }}
                       {% if field.help_text %}
