@@ -16,8 +16,9 @@ class LeagueSettingsForm(forms.ModelForm):
     # def clean(self):
     #     # change all nulls to 0s
     #     for key, value in self.cleaned_data.items():
-    #         if value is None:
-    #             filter[key] = 0
+    #         print(f'{key} : {value}')
+    #         # if value is None:
+    #             # filter[key] = 0
 
         # def clean_url(self):
         # url = self.cleaned_data['url']
