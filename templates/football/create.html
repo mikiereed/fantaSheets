@@ -13,7 +13,7 @@
             <div class="card-body">
               <!-- Alerts -->
               {% include 'partials/_alerts.html' %}
-              <form action="{% url 'create' %}" method="POST">
+              <form id="league_settings" action="{% url 'create' %}" method="POST">
                 {% csrf_token %}
                 {% for field in league_settings_form %}
                   <div class="form-group {{ field.name|slice:':4' }}">
@@ -38,3 +38,101 @@
     </div>
   </section>
 {% endblock content %}
+
+{% block javascript %}
+  <script type="text/javascript">
+        $(document).ready(function () {
+            $('#id_league_hosting_site').focus();
+
+            $('#league_settings *').filter(':input').each(function(){
+              if ($(this).val() == 0) {
+                $(this).val('');
+              }
+            });
+            
+            //Original Settings Hide/Show
+            $('.rost').toggle();
+            $('.pass').toggle();
+            $('.rush').toggle();
+            $('.rece').toggle();
+            $('.dst_').toggle();
+            $('.indi').toggle();
+            $('.kick').toggle();
+
+            var passing = ($('#id_roster_quarterbacks').val() + $('#id_roster_offensive_players').val()) > 0;
+            $('.pass').toggle(passing);
+
+            var rushing = ($('#id_roster_quarterbacks').val() + $('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val()) > 0;
+            $('.rush').toggle(rushing);
+
+            var receiving = ($('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val()) > 0;
+            $('.rece').toggle(receiving);
+
+            var misc = ($('#id_roster_quarterbacks').val() + $('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val() + $('#IDP').val()) > 0;
+            $('.miscSettings').toggle(misc);
+
+            var kicking = $('#id_roster_kickers').val() > 0;
+            $('.kick').toggle(kicking);
+
+            var defense = $('#id_roster_team_defense_special_teams').val() > 0;
+            $('.dst_').toggle(defense);
+
+            var indDefense = $('#IDP').val() > 0;
+            $('.iDPSettings').toggle(indDefense);
+
+            $('#id_number_of_teams').change(function () {
+              var roster = $('#id_number_of_teams').val() > 0;
+              $('.rost').toggle(roster);
+            })
+
+            $("#id_roster_quarterbacks").change(function () {
+                var passing = ($('#id_roster_quarterbacks').val() + $('#id_roster_offensive_players').val()) > 0;
+                $('.pass').toggle(passing);
+
+                var rushing = ($('#id_roster_quarterbacks').val() + $('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val()) > 0;
+                $('.rush').toggle(rushing);
+            }); //End Passing Only Click
+
+            $("#id_roster_running_backs, #id_roster_wide_receivers, #id_roster_tight_ends, #FlexRBWR, #FlexRBWRTE").change(function () {
+                var rushing = ($('#id_roster_quarterbacks').val() + $('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val()) > 0;
+                $('.rush').toggle(rushing);
+
+                var receiving = ($('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val()) > 0;
+                $('.rece').toggle(receiving);
+            }); //End Rushing/Receiving Click
+
+            $("#id_roster_offensive_players").change(function () {
+                var passing = ($('#id_roster_quarterbacks').val() + $('#id_roster_offensive_players').val()) > 0;
+                $('.pass').toggle(passing);
+
+                var rushing = ($('#id_roster_quarterbacks').val() + $('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val()) > 0;
+                $('.rush').toggle(rushing);
+                var receiving = ($('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val()) > 0;
+                $('.rece').toggle(receiving);
+            }); //End All Offense click
+
+            $("#id_roster_quarterbacks, #id_roster_running_backs, #id_roster_wide_receivers, #id_roster_tight_ends, #FlexRBWR, #FlexRBWRTE, #id_roster_offensive_players, #IDP").change(function () {
+                var misc = ($('#id_roster_quarterbacks').val() + $('#id_roster_running_backs').val() + $('#id_roster_wide_receivers').val() + $('#id_roster_tight_ends').val() + $('#id_roster_offensive_players').val() + $('#FlexRBWR').val() + $('#FlexRBWRTE').val() + $('#IDP').val()) > 0;
+                $('.miscSettings').toggle(misc);
+
+            }); //End Misc Settings click
+
+            $("#id_roster_kickers").change(function () {
+                var kicking = $('#id_roster_kickers').val() > 0;
+                $('.kick').toggle(kicking);
+
+            }); //End Kicking Settings click
+
+            $("#id_roster_team_defense_special_teams").change(function () {
+                var defense = $('#id_roster_team_defense_special_teams').val() > 0;
+                $('.dst_').toggle(defense);
+
+            }); //End DST Settings click
+
+            $("#IDP").change(function () {
+                var indDefense = $('#IDP').val() > 0;
+                $('.iDPSettings').toggle(indDefense);
+            }); //End IDP Settings click
+        }); //End Ready
+  </script>
+{% endblock javascript %}

@@ -12,8 +12,9 @@ class LeagueSettings(models.Model):
                               on_delete=models.CASCADE,)
     league_hosting_site = models.CharField(
         'Hosting Site', max_length=20, choices=LEAGUE_SITES)
-    title = models.CharField(max_length=50)
     number_of_teams = models.IntegerField('Number of Teams')
+    title = models.CharField('fantaSheet Name', max_length=50)
+
     # roster settings
     roster_quarterbacks = models.IntegerField('Quarterbacks')
     roster_team_quarterbacks = models.IntegerField('Team Quarterbacks')
@@ -42,14 +43,16 @@ class LeagueSettings(models.Model):
     roster_bench_spots = models.IntegerField('Bench Spots')
     roster_injured_reserve_spots = models.IntegerField('Injured Reserve Spots')
     # passing settings
-    passing_yards = models.FloatField()
-    passing_touchdowns = models.FloatField()
-    passing_interceptions = models.FloatField()
-    passing_two_point_conversions = models.FloatField()
+    passing_yards = models.FloatField('Points Per Passing Yard')
+    passing_touchdowns = models.FloatField('Points Per Passing Touchdown')
+    passing_interceptions = models.FloatField('Points Per Interception')
+    passing_two_point_conversions = models.FloatField(
+        'Points Per Passing Two Point Conversion')
     # rushing settings
-    rushing_yards = models.FloatField()
-    rushing_touchdowns = models.FloatField()
-    rushing_two_point_conversions = models.FloatField()
+    rushing_yards = models.FloatField('Points Per Rushing Yard')
+    rushing_touchdowns = models.FloatField('Points Per Rushing Touchdown')
+    rushing_two_point_conversions = models.FloatField(
+        'Points Per Rushing Two Point Conversion')
     # receiving settings
     receiving_receptions = models.FloatField()
     receiving_yards = models.FloatField()
