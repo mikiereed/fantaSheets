@@ -6,7 +6,20 @@ class LeagueSettingsForm(forms.ModelForm):
     class Meta:
         model = LeagueSettings
         # fields = ('title', 'league_hosting_site', 'number_of_teams')
-        exclude = ('owner',)
+        exclude = ('owner',
+                   'roster_defensive_tackles',
+                   'roster_defensive_ends',
+                   'roster_defensive_lines',
+                   'roster_defensive_players',
+                   'roster_linebackers',
+                   'roster_edge_rushers',
+                   'roster_defensive_backs',
+                   'roster_cornerbacks',
+                   'roster_safeties',
+                   'roster_punters',
+                   'roster_head_coaches',
+                   'roster_team_quarterbacks',
+                   'roster_injured_reserve_spots',)
 
     def __init__(self, *args, **kwargs):
         super(LeagueSettingsForm, self).__init__(*args, **kwargs)

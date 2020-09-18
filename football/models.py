@@ -19,10 +19,10 @@ class LeagueSettings(models.Model):
     roster_quarterbacks = models.IntegerField('Quarterbacks')
     roster_team_quarterbacks = models.IntegerField('Team Quarterbacks')
     roster_running_backs = models.IntegerField('Running Backs')
-    roster_flex_running_back_wide_receiver = models.IntegerField('Flex RB/WR')
     roster_wide_receivers = models.IntegerField('Wide Receivers')
-    roster_flex_wide_receiver_tight_end = models.IntegerField('Flex WR/TE')
     roster_tight_ends = models.IntegerField('Tight Ends')
+    roster_flex_running_back_wide_receiver = models.IntegerField('Flex RB/WR')
+    roster_flex_wide_receiver_tight_end = models.IntegerField('Flex WR/TE')
     roster_flex_running_back_wide_receiver_tight_end = models.IntegerField(
         'Flex RB/WR/TE')
     roster_offensive_players = models.IntegerField('Offensive Players')
