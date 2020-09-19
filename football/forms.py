@@ -26,12 +26,12 @@ class LeagueSettingsForm(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    # def clean(self):
-    #     # change all nulls to 0s
-    #     for key, value in self.cleaned_data.items():
-    #         print(f'{key} : {value}')
-    #         # if value is None:
-    #             # filter[key] = 0
+    def clean(self):
+        # change all nulls to 0s
+        for key, value in self.cleaned_data.items():
+            print(f'{key} : {value}')
+            # if value is None:
+                # filter[key] = 0
 
         # def clean_url(self):
         # url = self.cleaned_data['url']
@@ -41,7 +41,7 @@ class LeagueSettingsForm(forms.ModelForm):
         #     raise forms.ValidationError('The given URL does not ' \
         #                                 'match valid image extensions.')
         # return url
-
+        
         # def save(self, force_insert=False,
         #          force_update=False,
         #          commit=True):
