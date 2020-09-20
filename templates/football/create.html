@@ -46,13 +46,7 @@
             
             //Hide all settings till needed
             $('.rost').toggle();
-            $('.pass').toggle();
-            $('.rush').toggle();
-            $('.rece').toggle();
-            $('.dst_').toggle();
-            $('.indi').toggle();
-            $('.kick').toggle();
-            $('.idp_').toggle();
+            hide_settings_not_needed();
 
             // Show settings when needed
             $('#id_number_of_teams').change(function () {
@@ -60,7 +54,15 @@
               $('.rost').toggle(roster);
             });
 
+            $('.rost').click(function() {
+              hide_settings_not_needed();
+            })
+
             $('.rost').change(function () {
+              hide_settings_not_needed();              
+            });
+
+            function hide_settings_not_needed() {
               // toggle passing settings
               var passing_settings_needed =
                 ($('#id_roster_offensive_players').val() + 
@@ -115,7 +117,7 @@
               $('.idp_').toggle(IDP_on_roster);
 
               // toggle punter settings  
-            });
+            }
         }); //End Ready
   </script>
 {% endblock javascript %}

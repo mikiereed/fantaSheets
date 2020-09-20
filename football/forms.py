@@ -26,12 +26,12 @@ class LeagueSettingsForm(forms.ModelForm):
         for visible in self.visible_fields():
             visible.field.widget.attrs['class'] = 'form-control'
 
-    def clean(self):
-        # change all nulls to 0s
-        for key, value in self.cleaned_data.items():
-            print(f'{key} : {value}')
-            # if value is None:
-                # filter[key] = 0
+    # def clean(self):
+    #     # change all nulls to 0s
+    #     for key, value in self.cleaned_data.items():
+    #         print(f'{key} : {value}')
+    #         # if value is None:
+    #             # filter[key] = 0
 
         # def clean_url(self):
         # url = self.cleaned_data['url']

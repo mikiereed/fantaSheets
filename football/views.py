@@ -1,6 +1,6 @@
 from .forms import LeagueSettingsForm
 from django.contrib.auth.decorators import login_required
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.contrib import messages
 
 
@@ -17,14 +17,24 @@ def create(request):
     if request.method == 'POST':
         league_settings_form = LeagueSettingsForm(request.POST)
         if league_settings_form.is_valid():
-            # Create a new user object but avoid saving it yet
             new_settings = league_settings_form.save(commit=False)
-            # Set the chosen password
             new_settings.owner_id = request.POST['owner']
-            # Save the User object
+            new_settings.roster_defensive_tackles = 0
+            new_settings.roster_defensive_ends = 0
+            new_settings.roster_defensive_lines = 0
+            new_settings.roster_defensive_players = 0
+            new_settings.roster_linebackers = 0
+            new_settings.roster_edge_rushers = 0
+            new_settings.roster_defensive_backs = 0
+            new_settings.roster_cornerbacks = 0
+            new_settings.roster_safeties = 0
+            new_settings.roster_punters = 0
+            new_settings.roster_head_coaches = 0
+            new_settings.roster_team_quarterbacks = 0
+            new_settings.roster_injured_reserve_spots = 0
             new_settings.save()
             messages.success(request, 'fantaSheet Settings Saved')
-            return render(request, 'base_pages/dashboard.html')
+            return redirect('dashboard')
         else:
             messages.error(request, league_settings_form.errors)
     else:
