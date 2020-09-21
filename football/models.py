@@ -21,8 +21,10 @@ class LeagueSettings(models.Model):
     roster_running_backs = models.PositiveIntegerField('Running Backs')
     roster_wide_receivers = models.PositiveIntegerField('Wide Receivers')
     roster_tight_ends = models.PositiveIntegerField('Tight Ends')
-    roster_flex_running_back_wide_receiver = models.PositiveIntegerField('Flex RB/WR')
-    roster_flex_wide_receiver_tight_end = models.PositiveIntegerField('Flex WR/TE')
+    roster_flex_running_back_wide_receiver = models.PositiveIntegerField(
+        'Flex RB/WR')
+    roster_flex_wide_receiver_tight_end = models.PositiveIntegerField(
+        'Flex WR/TE')
     roster_flex_running_back_wide_receiver_tight_end = models.PositiveIntegerField(
         'Flex RB/WR/TE')
     roster_offensive_players = models.PositiveIntegerField('Offensive Players')
@@ -41,7 +43,8 @@ class LeagueSettings(models.Model):
     roster_punters = models.PositiveIntegerField('Punters')
     roster_head_coaches = models.PositiveIntegerField('Head Coaches')
     roster_bench_spots = models.PositiveIntegerField('Bench Spots')
-    roster_injured_reserve_spots = models.PositiveIntegerField('Injured Reserve Spots')
+    roster_injured_reserve_spots = models.PositiveIntegerField(
+        'Injured Reserve Spots')
     # passing settings
     passing_yards = models.FloatField('Points Per Passing Yard')
     passing_touchdowns = models.FloatField('Points Per Passing Touchdown')
@@ -54,50 +57,82 @@ class LeagueSettings(models.Model):
     rushing_two_point_conversions = models.FloatField(
         'Points Per Rushing Two Point Conversion')
     # receiving settings
-    receiving_receptions = models.FloatField()
-    receiving_yards = models.FloatField()
-    receiving_touchdowns = models.FloatField()
-    receiving_two_point_conversions = models.FloatField()
-    # kicking settings
-    kicking_point_after_touchdowns = models.FloatField()
-    kicking_missed_point_after_touchdowns = models.FloatField()
-    kicking_field_goal_0_to_39 = models.FloatField()
-    kicking_missed_field_goal_0_to_39 = models.FloatField()
-    kicking_field_goal_40_to_49 = models.FloatField()
-    kicking_missed_field_goal_40_to_49 = models.FloatField()
-    kicking_field_goal_50_to_59 = models.FloatField()
-    kicking_missed_field_goal_50_to_59 = models.FloatField()
-    kicking_field_goal_60_or_more = models.FloatField()
-    kicking_missed_field_goal_60_or_more = models.FloatField()
-    # defense / special teams settings
-    dst_kickoff_return_touchdowns = models.FloatField()
-    dst_punt_return_touchdowns = models.FloatField()
-    dst_interception_return_touchdowns = models.FloatField()
-    dst_fumble_return_touchdowns = models.FloatField()
-    dst_blocked_punt_or_field_goal_return_touchdowns = models.FloatField()
-    dst_extra_points_returned = models.FloatField()
-    dst_sacks = models.FloatField()
-    dst_blocked_punt_point_after_touchdown_field_goal = models.FloatField()
-    dst_interceptions = models.FloatField()
-    dst_fumbles_recovered = models.FloatField()
-    dst_safeties = models.FloatField()
-    dst_0_points_allowed = models.FloatField()
-    dst_1_to_6_points_allowed = models.FloatField()
-    dst_7_to_13_points_allowed = models.FloatField()
-    dst_14_to_17_points_allowed = models.FloatField()
-    dst_14_to_20_points_allowed = models.FloatField()
-    dst_18_to_21_points_allowed = models.FloatField()
-    dst_21_to_27_points_allowed = models.FloatField()
-    dst_22_to_27_points_allowed = models.FloatField()
-    dst_28_to_34_points_allowed = models.FloatField()
-    dst_35_to_45_points_allowed = models.FloatField()
-    dst_46_or_more_points_allowed = models.FloatField()
-    # TODO add yardage points
+    receiving_receptions = models.FloatField('Points Per Reception')
+    receiving_yards = models.FloatField('Points Per Receiving Yard')
+    receiving_touchdowns = models.FloatField('Points Per Receiving Touchdown')
+    receiving_two_point_conversions = models.FloatField(
+        'Points Per Receiving Two Point Conversion')
     # individual miscellaneous settings
-    individual_player_kickoff_return_touchdowns = models.FloatField()
-    individual_player_punt_return_touchdowns = models.FloatField()
-    individual_player_fumble_recovered_touchdowns = models.FloatField()
-    individual_player_fumbles_lost = models.FloatField()
+    individual_player_kickoff_return_touchdowns = models.FloatField(
+        'Points Per Player Kickoff Return Touchdown')
+    individual_player_punt_return_touchdowns = models.FloatField(
+        'Points Per Player Punt Return Touchdown')
+    individual_player_fumble_recovered_touchdowns = models.FloatField(
+        'Points Per Player Fumble Returned for a Touchdown')
+    individual_player_fumbles_lost = models.FloatField(
+        'Points Per Player Fumble Lost')
+    # kicking settings
+    kicking_point_after_touchdowns = models.FloatField(
+        'Points Per Point After Touchdown Made')
+    kicking_missed_point_after_touchdowns = models.FloatField(
+        'Points Per Point After Touchdown Missed')
+    kicking_field_goal_0_to_39 = models.FloatField(
+        'Points Per 0-39 Yard Field Goal Made')
+    kicking_missed_field_goal_0_to_39 = models.FloatField(
+        'Points Per 0-39 Yard Field Goal Missed')
+    kicking_field_goal_40_to_49 = models.FloatField(
+        'Points Per 40-49 Yard Field Goal Made')
+    kicking_missed_field_goal_40_to_49 = models.FloatField(
+        'Points Per 40-49 Yard Field Goal Missed')
+    kicking_field_goal_50_to_59 = models.FloatField(
+        'Points Per 50-59 Yard Field Goal Made')
+    kicking_missed_field_goal_50_to_59 = models.FloatField(
+        'Points Per 50-59 Yard Field Goal Missed')
+    kicking_field_goal_60_or_more = models.FloatField(
+        'Points Per 60+ Yard Field Goal Made')
+    kicking_missed_field_goal_60_or_more = models.FloatField(
+        'Points Per 60+ Yard Field Goal Missed')
+    # defense / special teams settings
+    dst_kickoff_return_touchdowns = models.FloatField(
+        'Points Per Kickoff Return Touchdown')
+    dst_punt_return_touchdowns = models.FloatField(
+        'Points Per Punt Return Touchdown')
+    dst_interception_return_touchdowns = models.FloatField(
+        'Points Per Interception Return Touchdown')
+    dst_fumble_return_touchdowns = models.FloatField(
+        'Points Per Fumble Return Touchdown')
+    dst_blocked_punt_or_field_goal_return_touchdowns = models.FloatField(
+        'Points Per Blocked Punt or Field Goal Return Touchdown')
+    dst_extra_points_returned = models.FloatField(
+        'Points Per Blocked Extra Point Return Touchdown')
+    dst_sacks = models.FloatField('Points Per Sack')
+    dst_blocked_punt_point_after_touchdown_field_goal = models.FloatField(
+        'Points Per Blocked Extra Point')
+    dst_interceptions = models.FloatField('Points Per Interception')
+    dst_fumbles_recovered = models.FloatField('Points Per Fumble Recovered')
+    dst_safeties = models.FloatField('Points Per Safety')
+    dst_0_points_allowed = models.FloatField('Points For 0 Points Allowed')
+    dst_1_to_6_points_allowed = models.FloatField(
+        'Points For 1-6 Points Allowed')
+    dst_7_to_13_points_allowed = models.FloatField(
+        'Points For 7-13 Points Allowed')
+    dst_14_to_17_points_allowed = models.FloatField(
+        'Points For 14-17 Points Allowed')
+    dst_14_to_20_points_allowed = models.FloatField(
+        'Points For 14-20 Points Allowed')
+    dst_18_to_21_points_allowed = models.FloatField(
+        'Points For 18-21 Points Allowed')
+    dst_21_to_27_points_allowed = models.FloatField(
+        'Points For 21-27 Points Allowed')
+    dst_22_to_27_points_allowed = models.FloatField(
+        'Points For 22-27 Points Allowed')
+    dst_28_to_34_points_allowed = models.FloatField(
+        'Points For 28-34 Points Allowed')
+    dst_35_to_45_points_allowed = models.FloatField(
+        'Points For 35-45 Points Allowed')
+    dst_46_or_more_points_allowed = models.FloatField(
+        'Points For 46+ Points Allowed')
+    # TODO add yardage points
 
     class Meta:
         ordering = ('title',)
