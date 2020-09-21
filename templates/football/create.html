@@ -29,7 +29,7 @@
                 {% else %}
                   <input type="hidden" name="owner" value="0" id="id_owner">
                 {% endif %}
-                <input type="submit" value="Create fantaSheet" class="btn btn-secondary btn-block">
+                <input type="submit" value="Create fantaSheet" class="btn btn-secondary btn-block" id="id_submit">
               </form>  
             </div>
           </div>
@@ -44,14 +44,14 @@
         $(document).ready(function () {
             $('#id_league_hosting_site').focus();
             
-            //Hide all settings till needed
-            $('.rost').toggle();
             hide_settings_not_needed();
 
-            // Show settings when needed
+            $('#id_number_of_teams').click(function () {
+              hide_settings_not_needed();
+            });
+
             $('#id_number_of_teams').change(function () {
-              var roster = $('#id_number_of_teams').val() > 0;
-              $('.rost').toggle(roster);
+              hide_settings_not_needed();
             });
 
             $('.rost').click(function() {
@@ -62,7 +62,18 @@
               hide_settings_not_needed();              
             });
 
+            $('#league_settings').submit(function () {
+              // if !(roster_is_greater_than_1())
+              //   return false;
+              set_null_fields_to_zero();
+              return true;
+            })
+
             function hide_settings_not_needed() {
+              // toggle roster settings
+              var roster_settings_needed = $('#id_number_of_teams').val() > 0;
+              $('.rost').toggle(roster_settings_needed);
+
               // toggle passing settings
               var passing_settings_needed =
                 ($('#id_roster_offensive_players').val() + 
@@ -117,6 +128,18 @@
               $('.idp_').toggle(IDP_on_roster);
 
               // toggle punter settings  
+            }
+
+            function set_null_fields_to_zero() {
+              $('#league_settings *').filter(':input').each(function(){
+                  if ($(this).attr("id") == 'id_title'|| $(this).attr("id") == 'id_league_hosting_site') {
+                    return; // continue
+                  };
+                  
+                  if ($(this).val() == '') {
+                    $(this).val(0);
+                  };        
+              });
             }
         }); //End Ready
   </script>

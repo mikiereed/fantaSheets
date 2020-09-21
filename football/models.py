@@ -136,7 +136,42 @@ class LeagueSettings(models.Model):
 
     class Meta:
         ordering = ('title',)
-        verbose_name_plural = "League Settings"
+        verbose_name_plural = 'league settings'
 
     def __str__(self):
         return self.title
+
+
+class projections(models.Model):
+    player = models.CharField('Player Team', max_length=50)
+    position = models.CharField(max_length=5)
+    passing_attempts = models.FloatField()
+    passing_completions = models.FloatField()
+    passing_yards = models.FloatField()
+    passing_touchdowns = models.FloatField()
+    passing_interceptions = models.FloatField()
+    rushing_attempts = models.FloatField()
+    rushing_yards = models.FloatField()
+    rushing_touchdowns = models.FloatField()
+    receiving_receptions = models.FloatField()
+    receiving_yards = models.FloatField()
+    receiving_touchdowns = models.FloatField()
+    player_fumbles_lost = models.FloatField()
+    kicking_field_goals_attempted = models.FloatField()
+    kicking_field_goals_made = models.FloatField()
+    kicking_extra_points_made = models.FloatField()
+    dst_sacks = models.FloatField()
+    dst_interceptions = models.FloatField()
+    dst_fumbles_recovered = models.FloatField()
+    dst_fumbles_forced = models.FloatField()
+    dst_touchdowns = models.FloatField()
+    dst_safeties = models.FloatField()
+    dst_points_against = models.FloatField()
+    dst_yards_against = models.FloatField()
+
+    class Meta:
+        ordering = ('player',)
+        verbose_name_plural = 'projections'
+
+    def __str__(self):
+        return self.player
