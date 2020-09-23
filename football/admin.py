@@ -1,6 +1,15 @@
 from django.contrib import admin
 from .models import LeagueSettings, Projections, Team
 
+from import_export import resources
+from core.models import Book
+
+
+class BookResource(resources.ModelResource):
+
+    class Meta:
+        model = Book
+
 
 @admin.register(LeagueSettings)
 class LeagueSettingsAdmin(admin.ModelAdmin):
@@ -23,6 +32,6 @@ class ProjectionsAdmin(admin.ModelAdmin):
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ('id', 'abbreviation', 'name', 'mascot', 'bye_week')
+    list_display = ('id', 'abbreviation', 'name', 'mascot', 'bye_week',)
     list_display_links = ('id', 'abbreviation', 'name',)
     list_per_page = 40
