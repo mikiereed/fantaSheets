@@ -145,15 +145,15 @@ class LeagueSettings(models.Model):
 class Team(models.Model):
     abbreviation = models.CharField(
         "Team Abbr", max_length=4, unique=True)
-    name = models.CharField("Team", max_length=25)
+    city = models.CharField("Team", max_length=25)
     mascot = models.CharField(max_length=20)
     bye_week = models.PositiveIntegerField()
 
     class Meta:
-        ordering = ('name',)
+        ordering = ('city',)
 
     def __str__(self):
-        return self.name
+        return self.city + ' ' + self.mascot
 
 
 class Projections(models.Model):

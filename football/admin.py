@@ -23,11 +23,12 @@ class ProjectionsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Team)
-class TeamAdmin(admin.ModelAdmin):
-    list_display = ('id', 'abbreviation', 'name', 'mascot', 'bye_week',)
-    list_display_links = ('id', 'abbreviation', 'name',)
+class TeamAdmin(ImportExportModelAdmin, admin.ModelAdmin):
+    list_display = ('id', 'abbreviation', 'city', 'mascot', 'bye_week',)
+    list_display_links = ('id', 'abbreviation', 'city', 'mascot',)
     list_per_page = 40
 
 
-class TeamImportExport(ImportExportModelAdmin):
-    pass
+# @admin.register(Team, TeamAdmin)
+# class TeamImportExport(ImportExportModelAdmin, TeamAdmin):
+#     pass
