@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'base_pages.apps.BasePagesConfig',
     'football.apps.FootballConfig',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -157,3 +158,6 @@ DATABASES = {
 MESSAGE_TAGS = {
     messages.ERROR: 'danger'
 }
+
+# django-import-export
+IMPORT_EXPORT_USE_TRANSACTIONS = True

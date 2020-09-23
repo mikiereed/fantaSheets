@@ -1,14 +1,6 @@
+from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
 from .models import LeagueSettings, Projections, Team
-
-from import_export import resources
-from core.models import Book
-
-
-class BookResource(resources.ModelResource):
-
-    class Meta:
-        model = Book
 
 
 @admin.register(LeagueSettings)
@@ -35,3 +27,7 @@ class TeamAdmin(admin.ModelAdmin):
     list_display = ('id', 'abbreviation', 'name', 'mascot', 'bye_week',)
     list_display_links = ('id', 'abbreviation', 'name',)
     list_per_page = 40
+
+
+class TeamImportExport(ImportExportModelAdmin):
+    pass
