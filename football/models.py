@@ -142,8 +142,23 @@ class LeagueSettings(models.Model):
         return self.title
 
 
-class projections(models.Model):
+class Team(models.Model):
+    abbreviation = models.CharField(
+        "Team Abbr", max_length=4, unique=True)
+    name = models.CharField("Team", max_length=25)
+    mascot = models.CharField(max_length=20)
+    bye_week = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
+class Projections(models.Model):
     player = models.CharField('Player Team', max_length=50)
+    team = models.CharField(max_length=4)
     position = models.CharField(max_length=5)
     passing_attempts = models.FloatField()
     passing_completions = models.FloatField()
