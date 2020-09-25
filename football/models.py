@@ -157,7 +157,7 @@ class Team(models.Model):
 
 
 class Projections(models.Model):
-    player = models.CharField('Player Team', max_length=50)
+    player = models.CharField(max_length=50)
     team = models.CharField(max_length=4)
     position = models.CharField(max_length=5)
     passing_attempts = models.FloatField()
