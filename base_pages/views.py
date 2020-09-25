@@ -1,5 +1,8 @@
-from django.shortcuts import render
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
+from django.shortcuts import render
+from football.models import LeagueSettings
 
 
 def index(request):
@@ -10,5 +13,12 @@ def about(request):
     return render(request, 'base_pages/about.html')
 
 
+@login_required
 def dashboard(request):
-    return render(request, 'base_pages/dashboard.html')
+    fantaSheets = LeagueSettings.objects.all()
+
+    context = {
+        'fantaSheets': fantaSheets
+    }
+
+    return render(request, 'base_pages/dashboard.html', context)
