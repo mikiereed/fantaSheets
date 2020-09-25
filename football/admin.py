@@ -14,10 +14,10 @@ class LeagueSettingsAdmin(admin.ModelAdmin):
 
 
 @admin.register(Projections)
-class ProjectionsAdmin(admin.ModelAdmin):
+class ProjectionsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'player', 'team', 'position',)
     list_display_links = ('id', 'player',)
-    list_filter = ('player', 'team', 'position',)
+    list_filter = ('team', 'position',)
     search_fields = ('player', 'team', 'position',)
     list_per_page = 100
 
