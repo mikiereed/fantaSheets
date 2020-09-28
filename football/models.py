@@ -1,5 +1,5 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
 
 
 class LeagueSettings(models.Model):
@@ -142,20 +142,6 @@ class LeagueSettings(models.Model):
         return self.title
 
 
-class Team(models.Model):
-    abbreviation = models.CharField(
-        "Team Abbr", max_length=4, unique=True)
-    city = models.CharField("Team", max_length=25)
-    mascot = models.CharField(max_length=20)
-    bye_week = models.PositiveIntegerField()
-
-    class Meta:
-        ordering = ('city',)
-
-    def __str__(self):
-        return self.city + ' ' + self.mascot
-
-
 class Projections(models.Model):
     player = models.CharField(max_length=50)
     team = models.CharField(max_length=4)
@@ -190,3 +176,17 @@ class Projections(models.Model):
 
     def __str__(self):
         return self.player
+
+
+class Team(models.Model):
+    abbreviation = models.CharField(
+        "Team Abbr", max_length=4, unique=True)
+    city = models.CharField("Team", max_length=25)
+    mascot = models.CharField(max_length=20)
+    bye_week = models.PositiveIntegerField()
+
+    class Meta:
+        ordering = ('city',)
+
+    def __str__(self):
+        return self.city + ' ' + self.mascot

@@ -1,1 +1,7 @@
 <h1> football fantasheet </h1>
+
+{% for player in fantaSheet_values %}
+
+    <p>{{forloop.counter}} - {{ player.name }}, {{ player.projected_points }}, {{ player.projections.rushing_yards }}</p>
+
+{% endfor %}

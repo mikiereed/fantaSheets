@@ -2,6 +2,8 @@ from .forms import LeagueSettingsForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
+from .models import LeagueSettings
+from .services import calculate_fantaSheet
 
 
 def index(request):
@@ -9,7 +11,15 @@ def index(request):
 
 
 def fantaSheet(request, fantaSheet_id):
-    return render(request, 'football/fantaSheet.html')
+    league_settings = LeagueSettings.objects.only('id').get(id=fantaSheet_id)
+
+    fantaSheet_values = calculate_fantaSheet(league_settings)
+
+    context = {
+        'fantaSheet_values': fantaSheet_values
+    }
+
+    return render(request, 'football/fantaSheet.html', context)
 
 
 @login_required

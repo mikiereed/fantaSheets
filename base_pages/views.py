@@ -15,10 +15,10 @@ def about(request):
 
 @login_required
 def dashboard(request):
-    fantaSheets = FootballLeagueSettings.objects.filter(owner=request.user)
+    league_settings = FootballLeagueSettings.objects.filter(owner=request.user)
 
     context = {
-        'fantaSheets': fantaSheets
+        'league_settings': league_settings
     }
 
     return render(request, 'base_pages/dashboard.html', context)
