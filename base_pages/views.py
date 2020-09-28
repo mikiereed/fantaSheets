@@ -2,7 +2,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse
 from django.shortcuts import render
-from football.models import LeagueSettings
+from football.models import LeagueSettings as FootballLeagueSettings
 
 
 def index(request):
@@ -15,7 +15,7 @@ def about(request):
 
 @login_required
 def dashboard(request):
-    fantaSheets = LeagueSettings.objects.all()
+    fantaSheets = FootballLeagueSettings.objects.filter(owner=request.user)
 
     context = {
         'fantaSheets': fantaSheets

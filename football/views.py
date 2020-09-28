@@ -8,7 +8,7 @@ def index(request):
     return render(request, 'football/fantaSheets.html')
 
 
-def fantaSheet(request):
+def fantaSheet(request, fantaSheet_id):
     return render(request, 'football/fantaSheet.html')
 
 
