@@ -46,6 +46,14 @@
             
             hide_settings_not_needed();
 
+            $('#id_league_hosting_site').click(function () {
+              hide_settings_not_needed();
+            });
+
+            $('#id_league_hosting_site').change(function () {
+              hide_settings_not_needed();
+            });
+
             $('#id_number_of_teams').click(function () {
               hide_settings_not_needed();
             });
@@ -118,6 +126,22 @@
               // toggle dst settings
               var defense_on_roster = $('#id_roster_team_defense_special_teams').val() > 0;
               $('.dst_').toggle(defense_on_roster);
+              if (defense_on_roster)
+              {
+                // show or hide yahoo/espn points against settings
+                var yahoo_league = $('#id_league_hosting_site').val() == 'yahoo';
+                $('label[for="id_dst_14_to_20_points_allowed"]').toggle(yahoo_league);
+                $('#id_dst_14_to_20_points_allowed').toggle(yahoo_league);
+                $('label[for="id_dst_21_to_27_points_allowed"]').toggle(yahoo_league);
+                $('#id_dst_21_to_27_points_allowed').toggle(yahoo_league);                  
+                
+                $('label[for="id_dst_14_to_17_points_allowed"]').toggle(!yahoo_league);
+                $('#id_dst_14_to_17_points_allowed').toggle(!yahoo_league);
+                $('label[for="id_dst_18_to_21_points_allowed"]').toggle(!yahoo_league);
+                $('#id_dst_18_to_21_points_allowed').toggle(!yahoo_league);
+                $('label[for="id_dst_22_to_27_points_allowed"]').toggle(!yahoo_league);
+                $('#id_dst_22_to_27_points_allowed').toggle(!yahoo_league);
+              }
 
               // toggle kicking settings
               var kicker_on_roster = $('#id_roster_kickers').val() > 0;
