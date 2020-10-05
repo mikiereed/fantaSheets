@@ -17,17 +17,6 @@ img {
 
 .myFantaSheets {
     width: 30%;
-    display: block;
-    margin-left: auto;
-    margin-right: auto;
-}
-
-a.button {
-    -webkit-appearance: button;
-    -moz-appearance: button;
-    appearance: button;
-    text-decoration: none;
-    color: rgba(32, 134, 107, 0.8);
 }
 
 .navbar {
@@ -40,7 +29,7 @@ a.button {
 }
 
 #showcase {
-    background-image: url("../img/stadium_background.jpg");
+    background-image: url("../img/stadium_background.cdba9eb59565.jpg");
     background-repeat: no-repeat;
     background-position: center top;
     background-size: cover;
@@ -68,7 +57,7 @@ a.button {
 }
 
 #services {
-    background: url(../img/fantaSheets_small_no_back.png) no-repeat top center fixed/cover;
+    background: url("../img/fantaSheets_small_no_back.06ce1fca7b4e.png") no-repeat top center fixed/cover;
     min-height: 300px;
     position: relative;
     overflow: hidden;
@@ -85,7 +74,7 @@ a.button {
 }
 
 #showcase-inner {
-    background: url(../img/fantaSheets_small_no_back.png) no-repeat top center fixed/cover;
+    background: url("../img/fantaSheets_small_no_back.06ce1fca7b4e.png") no-repeat top center fixed/cover;
     position: relative;
     overflow: hidden;
     min-height: 200px;

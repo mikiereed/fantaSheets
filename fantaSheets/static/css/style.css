@@ -1,7 +1,7 @@
 /*!
- * Original from Python Django Dev to Deployment
- * https://github.com/PacktPublishing/Python-Django-Dev-To-Deployment/blob/master/S04/1%20-%20Project%20Resources%20%26%20Requirements/btre_resources.zip
- */
+* Original from Python Django Dev to Deployment
+* https://github.com/PacktPublishing/Python-Django-Dev-To-Deployment/blob/master/S04/1%20-%20Project%20Resources%20%26%20Requirements/btre_resources.zip
+*/
 
 .btn-secondary {
     color: #fff !important;
@@ -13,6 +13,13 @@ img {
 
 .logo {
     width: 80px;
+}
+
+.myFantaSheets {
+    width: 30%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .navbar {

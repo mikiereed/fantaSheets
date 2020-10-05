@@ -1,22 +1,26 @@
 from collections import namedtuple
+from dataclasses import dataclass
 from football.models import LeagueSettings, Projections, Team
 from operator import attrgetter
 
 
+@dataclass
 class Player:
-    def __init__(self, name: str, team: str, bye_week: int, position: str, projected_points, projections):
-        self.name = name
-        self.position = position
-        self.team = team
-        self.bye_week = bye_week
-        self.projected_points = projected_points
-        self.projections = projections
-
-    def __str__(self):
-        return self.name
+    name: str
+    position: str
+    team: str
+    bye_week: int
+    projected_points: float
+    projections: Projections
 
 
-ProjectedGames = namedtuple('ProjectedGames', 'very_low low normal high very_high')
+ProjectedGames = namedtuple('ProjectedGames', [
+    'very_low',
+    'low',
+    'normal',
+    'high',
+    'very_high',
+    ])
 
 
 def calculateDSTPointsForYardsOrPoints(setting_value, low, high, projected_games, projected_year: bool):
