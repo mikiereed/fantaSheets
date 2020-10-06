@@ -23,7 +23,28 @@ ProjectedGames = namedtuple('ProjectedGames', [
     ])
 
 
-def calculateDSTPointsForYardsOrPoints(setting_value, low, high, projected_games, projected_year: bool):
+def calculate_fantaSheet(league_settings):
+    projections = Projections.objects.all()
+
+    players = []
+
+    for player_projections in projections:
+        bye_week = _get_bye_week(player_projections.team)
+        projected_player_points = _calculate_projected_points(player_projections, league_settings)
+        player = Player(
+            name=player_projections.player,
+            team=player_projections.team,
+            bye_week=bye_week,
+            position=player_projections.position,
+            projected_points=projected_player_points,
+            projections=player_projections)
+        players.append(player)
+        sorted_players= sorted(players, key= attrgetter('projected_points'), reverse=True)
+
+    return sorted_players
+
+
+def _calculate_dst_points_for_yards_or_points(setting_value, low, high, projected_games, projected_year: bool):
     if (setting_value == 0):
         return 0
 
@@ -61,28 +82,7 @@ def calculateDSTPointsForYardsOrPoints(setting_value, low, high, projected_games
     return points
 
 
-def calculate_fantaSheet(league_settings):
-    projections = Projections.objects.all()
-
-    players = []
-
-    for player_projections in projections:
-        bye_week = getByeWeek(player_projections.team)
-        projected_player_points = calculate_projected_points(player_projections, league_settings)
-        player = Player(
-            name=player_projections.player,
-            team=player_projections.team,
-            bye_week=bye_week,
-            position=player_projections.position,
-            projected_points=projected_player_points,
-            projections=player_projections)
-        players.append(player)
-        sorted_players= sorted(players, key= attrgetter('projected_points'), reverse=True)
-
-    return sorted_players
-
-
-def calculate_projected_points(player_projections, league_settings):
+def _calculate_projected_points(player_projections, league_settings):
     # passing
     # projected_player_points += player_projections.passing_attempts * league_settings.
     # projected_player_points += player_projections.passing_completions * league_settings.
@@ -103,15 +103,15 @@ def calculate_projected_points(player_projections, league_settings):
     projected_player_points += player_projections.player_fumbles_lost * league_settings.individual_player_fumbles_lost
 
     # kicking
-    projected_player_points += getKickerPoints(player_projections, league_settings)
+    projected_player_points += _get_kicker_points(player_projections, league_settings)
 
     # defense/special teams
-    projected_player_points += getDefenseSpecialTeamsPoints(player_projections, league_settings)
+    projected_player_points += _get_dst_points(player_projections, league_settings)
 
     return projected_player_points
 
 
-def getByeWeek(team_abbreviation: str):
+def _get_bye_week(team_abbreviation: str):
     try:
         team = Team.objects.only('abbreviation').get(abbreviation=team_abbreviation)
     except:
@@ -120,7 +120,7 @@ def getByeWeek(team_abbreviation: str):
         return team.bye_week     
 
 
-def getDefenseSpecialTeamsPoints(player_projections, league_settings):
+def _get_dst_points(player_projections, league_settings):
     if (player_projections.position != 'dst'):
         return 0
 
@@ -146,14 +146,14 @@ def getDefenseSpecialTeamsPoints(player_projections, league_settings):
     dst_points += player_projections.dst_touchdowns * frequency_interception_touchdown * league_settings.dst_interception_return_touchdowns
     dst_points += player_projections.dst_touchdowns * frequency_fumble_touchdown * league_settings.dst_fumble_return_touchdowns
     dst_points += player_projections.dst_touchdowns * frequency_blocked_kick_or_punt_touchdown * league_settings.dst_blocked_punt_or_field_goal_return_touchdowns
-    dst_points += getDSTPointsForPointsAgainst(player_projections.dst_points_against, league_settings)
+    dst_points += _get_dst_points_for_points_against(player_projections.dst_points_against, league_settings)
     # TODO dst yards against
     # dst_points += player_projections.dst_yards_against * league_settings.
 
     return dst_points
 
 
-def getDSTPointsForPointsAgainst(projected_against, league_settings):
+def _get_dst_points_for_points_against(projected_against, league_settings):
     # updated 10.1.2020
     # based on http://archive.advancedfootballanalytics.com/2009/05/are-nfl-coaches-too-timid.html
     points_per_game_standard_deviation = 10.0
@@ -163,71 +163,71 @@ def getDSTPointsForPointsAgainst(projected_against, league_settings):
         projected_year = True
         projected_against /= 16.0 # total games in a season
     
-    projected_games = getProjectedGamesBasedOnStdDeviation(
+    projected_games = _get_projected_games_based_on_std_deviation(
         start=projected_against, 
         standard_deviation=points_per_game_standard_deviation)
     dst_points_against_points = 0.0
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_0_points_allowed,
         low=0,
         high=0,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_1_to_6_points_allowed,
         low=1,
         high=6,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_7_to_13_points_allowed,
         low=7,
         high=13,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_14_to_17_points_allowed,
         low=14,
         high=17,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_14_to_20_points_allowed,
         low=14,
         high=20,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_18_to_21_points_allowed,
         low=18,
         high=21,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_21_to_27_points_allowed,
         low=21,
         high=27,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_22_to_27_points_allowed,
         low=22,
         high=27,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_28_to_34_points_allowed,
         low=28,
         high=34,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_35_to_45_points_allowed,
         low=35,
         high=45,
         projected_games=projected_games,
         projected_year=projected_year)
-    dst_points_against_points += calculateDSTPointsForYardsOrPoints(
+    dst_points_against_points += _calculate_dst_points_for_yards_or_points(
         setting_value=league_settings.dst_46_or_more_points_allowed,
         low=46,
         high=500,
@@ -236,7 +236,7 @@ def getDSTPointsForPointsAgainst(projected_against, league_settings):
     
     return dst_points_against_points
 
-def getKickerPoints(player_projections, league_settings):
+def _get_kicker_points(player_projections, league_settings):
     if (player_projections.position != 'k'):
         return 0
 
@@ -277,7 +277,7 @@ def getKickerPoints(player_projections, league_settings):
 
     return kicker_points
 
-def getProjectedGamesBasedOnStdDeviation(start: float, standard_deviation: float):
+def _get_projected_games_based_on_std_deviation(start: float, standard_deviation: float):
     projected_games = ProjectedGames(
         very_low=start - standard_deviation * 2, # 2 standard diveations below
         low=start - standard_deviation, # 1 standard diveation below
