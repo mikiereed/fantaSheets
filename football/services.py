@@ -1,6 +1,7 @@
 from collections import namedtuple
 from dataclasses import dataclass
-from football.models import LeagueSettings, Projections, Team
+from football.models import LeagueSettings, Position, Projections, Team
+from math import ceil, floor
 from operator import attrgetter
 
 
@@ -12,10 +13,11 @@ class Player:
     bye_week: int
     projected_points: float
     projections: Projections
+    value: float = 0
 
 
 @dataclass
-class DraftValues:
+class PositionValues:
     quarterbacks: float = 10000
     running_backs: float = 10001
     wide_receivers: float = 10002
@@ -159,26 +161,26 @@ def _get_bye_week(team_abbreviation: str):
         return team.bye_week     
 
 
-def _get_draft_values(player_projections, league_settings):
+def _get_position_values(player_projections, league_settings):
 
-    draft_values = DraftValues()  
+    position_values = PositionValues()  
     positions_used = _get_positions_used(league_settings)
 
-    draft_values_attributes = [attr for attr in dir(draft_values) if not attr.startswith('__')]
-    for attribute in draft_values_attributes:
-        position_draft_value = _get_position_draft_value(
+    position_values_attributes = [attr for attr in dir(position_values) if not attr.startswith('__')]
+    for attribute in position_values_attributes:
+        position_value = _get_position_value(
                                     position=attribute,
                                     number_of_position_used=getattr(positions_used, attribute),
                                     player_projections=player_projections,
                                 )
-        if (position_draft_value > 0):
+        if (position_value > 0):
             setattr(
-                draft_values,
+                position_values,
                 attribute,
-                position_draft_value
+                position_value
             )
 
-    return draft_values
+    return position_values
 
 
 def _get_dst_points(player_projections, league_settings):
@@ -299,6 +301,17 @@ def _get_dst_points_for_points_against(projected_against, league_settings):
     
     return dst_points_against_points
 
+
+def _get_full_position_string(position_abbreviation):
+
+    try:
+        position = Position.objects.only('abbreviation').get(abbreviation=position_abbreviation)
+    except:
+        return 0
+    else:
+        return position.name 
+
+
 def _get_kicker_points(player_projections, league_settings):
     
     if (player_projections.position != 'k'):
@@ -355,8 +368,41 @@ def _get_number_of_position_used(position, league_settings):
     return number_used
 
 
-def _get_position_draft_value(position, number_of_position_used, player_projections):
-    pass
+def _get_position_abbreviation(position):
+
+    try:
+        position = Position.objects.only('name').get(name=position)
+    except:
+        return 0
+    else:
+        return position.abbreviation 
+
+
+def _get_position_value(position, number_of_position_used, player_projections):
+
+    if (number_of_position_used <= 0):
+        return -1
+
+    position_value = -1
+    ceiling_player = ceil(number_of_position_used) - 1
+    floor_player = floor(number_of_position_used) - 1
+    decimal = number_of_position_used - floor(number_of_position_used)
+    position_abbreviation = _get_position_abbreviation(position)
+
+    projections_one_position = []
+
+    for player in player_projections:
+        if (player.position.lower() == position_abbreviation):
+            projections_one_position.append(player.projected_points)
+    
+    if (decimal > 0):
+        low_player_value = projections_one_position[ceiling_player] * decimal
+        high_player_value = projections_one_position[floor_player] * (1 - decimal)
+        position_value = high_player_value + low_player_value
+    else:
+        position_value = projections_one_position[floor_player]
+
+    return position_value
 
 
 def _get_positions_used(league_settings):
@@ -429,12 +475,21 @@ def _get_roster_size_minus_k_and_dst(league_settings):
     return roster_size_minus_k_and_dst
 
 
+def _set_player_values(players, position_values):
+
+    for player in players:
+        position = _get_full_position_string(position_abbreviation=player.position)
+        position_value = getattr(position_values, position)
+        player.value = player.projected_points - position_value
+    
+    return players
+
 def _rank_and_sort_players(players, league_settings):
     
     sorted_players= sorted(players, key= attrgetter('projected_points'), reverse=True)
 
-    # roster_size_minus_k_and_dst = _get_roster_size_minus_k_and_dst(league_settings)
+    position_values = _get_position_values(sorted_players, league_settings)
 
-    draft_values = _get_draft_values(players, league_settings)
+    sorted_players = _set_player_values(sorted_players, position_values)
 
     return sorted_players
