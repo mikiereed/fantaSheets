@@ -14,6 +14,20 @@ class Player:
     projections: Projections
 
 
+@dataclass
+class PositionsUsed:
+    quarterbacks: float = 0
+    running_backs: float = 0
+    wide_receivers: float = 0
+    tight_ends: float = 0
+    flex_running_back_wide_receiver: float = 0
+    flex_wide_receiver_tight_end: float = 0
+    flex_running_back_wide_receiver_tight_end: float = 0
+    offensive_players: float = 0
+    kickers: float = 0
+    team_defense_special_teams: float = 0
+
+
 ProjectedGames = namedtuple('ProjectedGames', [
     'very_low',
     'low',
@@ -22,8 +36,19 @@ ProjectedGames = namedtuple('ProjectedGames', [
     'very_high',
     ])
 
+# set for use during fantasheet calculations
+_positions_to_only_draft_one = [
+    'kickers',
+    'team_defense_special_teams',
+]
+
+# loop object attributes and values
+# for attr, value in positions_used.__dict__.items():
+#     print(attr, value)
+
 
 def calculate_fantaSheet(league_settings):
+    
     projections = Projections.objects.all()
 
     players = []
@@ -39,12 +64,14 @@ def calculate_fantaSheet(league_settings):
             projected_points=projected_player_points,
             projections=player_projections)
         players.append(player)
-        sorted_players= sorted(players, key= attrgetter('projected_points'), reverse=True)
 
-    return sorted_players
+    ranked_and_sorted_players = _rank_and_sort_players(players, league_settings)
+
+    return ranked_and_sorted_players
 
 
 def _calculate_dst_points_for_yards_or_points(setting_value, low, high, projected_games, projected_year: bool):
+    
     if (setting_value == 0):
         return 0
 
@@ -83,6 +110,7 @@ def _calculate_dst_points_for_yards_or_points(setting_value, low, high, projecte
 
 
 def _calculate_projected_points(player_projections, league_settings):
+    
     # passing
     # projected_player_points += player_projections.passing_attempts * league_settings.
     # projected_player_points += player_projections.passing_completions * league_settings.
@@ -112,6 +140,7 @@ def _calculate_projected_points(player_projections, league_settings):
 
 
 def _get_bye_week(team_abbreviation: str):
+    
     try:
         team = Team.objects.only('abbreviation').get(abbreviation=team_abbreviation)
     except:
@@ -121,6 +150,7 @@ def _get_bye_week(team_abbreviation: str):
 
 
 def _get_dst_points(player_projections, league_settings):
+    
     if (player_projections.position != 'dst'):
         return 0
 
@@ -154,6 +184,7 @@ def _get_dst_points(player_projections, league_settings):
 
 
 def _get_dst_points_for_points_against(projected_against, league_settings):
+    
     # updated 10.1.2020
     # based on http://archive.advancedfootballanalytics.com/2009/05/are-nfl-coaches-too-timid.html
     points_per_game_standard_deviation = 10.0
@@ -237,6 +268,7 @@ def _get_dst_points_for_points_against(projected_against, league_settings):
     return dst_points_against_points
 
 def _get_kicker_points(player_projections, league_settings):
+    
     if (player_projections.position != 'k'):
         return 0
 
@@ -277,7 +309,49 @@ def _get_kicker_points(player_projections, league_settings):
 
     return kicker_points
 
+
+def _get_number_of_position_used(position, league_settings):
+    
+    number_used = 0
+    starters = _get_roster_size_minus_k_and_dst(league_settings)
+    if (starters != 0):
+        number_used = ((((position) / starters) * 
+        league_settings.roster_bench_spots * 
+        league_settings.number_of_teams) + 
+        (league_settings.number_of_teams * (position)))
+
+    return number_used
+
+
+def _get_positions_used(league_settings):
+
+    positions_used = PositionsUsed()
+
+    positions_used_attributes = [attr for attr in dir(positions_used) if not attr.startswith('__')]
+    for attribute in positions_used_attributes:
+        if (_positions_to_only_draft_one.__contains__(attribute)):
+            setattr(
+            positions_used,
+            attribute,
+            getattr(
+                league_settings,
+                ('roster_%s' % attribute)) *
+                league_settings.number_of_teams)
+        else:
+            setattr(
+                positions_used,
+                attribute,
+                _get_number_of_position_used(
+                    position=getattr(
+                        league_settings,
+                        ('roster_%s' % attribute)),
+                    league_settings=league_settings))
+
+    return positions_used
+
+
 def _get_projected_games_based_on_std_deviation(start: float, standard_deviation: float):
+    
     projected_games = ProjectedGames(
         very_low=start - standard_deviation * 2, # 2 standard diveations below
         low=start - standard_deviation, # 1 standard diveation below
@@ -286,3 +360,45 @@ def _get_projected_games_based_on_std_deviation(start: float, standard_deviation
         very_high=start + standard_deviation * 2) # 2 standard diveations above
 
     return projected_games
+
+
+def _get_roster_size_minus_k_and_dst(league_settings):
+
+    roster_spots = [
+        league_settings.roster_quarterbacks,
+        league_settings.roster_team_quarterbacks,
+        league_settings.roster_running_backs,
+        league_settings.roster_wide_receivers,
+        league_settings.roster_tight_ends,
+        league_settings.roster_flex_running_back_wide_receiver,
+        league_settings.roster_flex_wide_receiver_tight_end,
+        league_settings.roster_flex_running_back_wide_receiver_tight_end,
+        league_settings.roster_offensive_players,
+        league_settings.roster_defensive_tackles,
+        league_settings.roster_defensive_lines,
+        league_settings.roster_linebackers,
+        league_settings.roster_edge_rushers,
+        league_settings.roster_defensive_lines,
+        league_settings.roster_cornerbacks,
+        league_settings.roster_safeties,
+        league_settings.roster_defensive_backs,
+        league_settings.roster_defensive_players,
+        league_settings.roster_punters,
+        league_settings.roster_head_coaches,
+        league_settings.roster_bench_spots,
+    ]
+    
+    roster_size_minus_k_and_dst = sum(roster_spots)
+    
+    return roster_size_minus_k_and_dst
+
+
+def _rank_and_sort_players(players, league_settings):
+    
+    sorted_players= sorted(players, key= attrgetter('projected_points'), reverse=True)
+
+    roster_size_minus_k_and_dst = _get_roster_size_minus_k_and_dst(league_settings)
+
+    positions_used = _get_positions_used(league_settings)
+
+    return sorted_players

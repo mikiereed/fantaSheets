@@ -8,58 +8,91 @@ class LeagueSettings(models.Model):
         ('yahoo', 'Yahoo'),
         ('other', 'Other'),
     )
-    owner = models.ForeignKey(User,
-                              on_delete=models.CASCADE,)
+    owner = models.ForeignKey(
+                            User,
+                            on_delete=models.CASCADE,)
     league_hosting_site = models.CharField(
-        'Hosting Site', max_length=20, choices=LEAGUE_SITES)
-    number_of_teams = models.IntegerField('Number of Teams')
-    title = models.CharField('fantaSheet Name', max_length=50)
+        'Hosting Site',
+        max_length=20,
+        choices=LEAGUE_SITES)
+    number_of_teams = models.IntegerField(
+        'Number of Teams')
+    title = models.CharField(
+        'fantaSheet Name',
+        max_length=50)
 
     # roster settings
-    roster_quarterbacks = models.PositiveIntegerField('Quarterbacks')
-    roster_team_quarterbacks = models.PositiveIntegerField('Team Quarterbacks')
-    roster_running_backs = models.PositiveIntegerField('Running Backs')
-    roster_wide_receivers = models.PositiveIntegerField('Wide Receivers')
-    roster_tight_ends = models.PositiveIntegerField('Tight Ends')
+    roster_quarterbacks = models.PositiveIntegerField(
+        'Quarterbacks')
+    roster_team_quarterbacks = models.PositiveIntegerField(
+        'Team Quarterbacks')
+    roster_running_backs = models.PositiveIntegerField(
+        'Running Backs')
+    roster_wide_receivers = models.PositiveIntegerField(
+        'Wide Receivers')
+    roster_tight_ends = models.PositiveIntegerField(
+        'Tight Ends')
     roster_flex_running_back_wide_receiver = models.PositiveIntegerField(
         'Flex RB/WR')
     roster_flex_wide_receiver_tight_end = models.PositiveIntegerField(
         'Flex WR/TE')
     roster_flex_running_back_wide_receiver_tight_end = models.PositiveIntegerField(
         'Flex RB/WR/TE')
-    roster_offensive_players = models.PositiveIntegerField('Offensive Players')
-    roster_defensive_tackles = models.PositiveIntegerField('Defensive Tackles')
-    roster_defensive_ends = models.PositiveIntegerField('Defensive Ends')
-    roster_linebackers = models.PositiveIntegerField('Linebackers')
-    roster_edge_rushers = models.PositiveIntegerField('Edge Rushers')
-    roster_defensive_lines = models.PositiveIntegerField('Defensive Lines')
-    roster_cornerbacks = models.PositiveIntegerField('Cornerbacks')
-    roster_safeties = models.PositiveIntegerField('Safeties')
-    roster_defensive_backs = models.PositiveIntegerField('Defensive Backs')
-    roster_defensive_players = models.PositiveIntegerField('Defensive Players')
+    roster_offensive_players = models.PositiveIntegerField(
+        'Offensive Players')
+    roster_defensive_tackles = models.PositiveIntegerField(
+        'Defensive Tackles')
+    roster_defensive_ends = models.PositiveIntegerField(
+        'Defensive Ends')
+    roster_linebackers = models.PositiveIntegerField(
+        'Linebackers')
+    roster_edge_rushers = models.PositiveIntegerField(
+        'Edge Rushers')
+    roster_defensive_lines = models.PositiveIntegerField(
+        'Defensive Lines')
+    roster_cornerbacks = models.PositiveIntegerField(
+        'Cornerbacks')
+    roster_safeties = models.PositiveIntegerField(
+        'Safeties')
+    roster_defensive_backs = models.PositiveIntegerField(
+        'Defensive Backs')
+    roster_defensive_players = models.PositiveIntegerField(
+        'Defensive Players')
     roster_team_defense_special_teams = models.PositiveIntegerField(
         'Defense / Special Teams')
-    roster_kickers = models.PositiveIntegerField('Kickers')
-    roster_punters = models.PositiveIntegerField('Punters')
-    roster_head_coaches = models.PositiveIntegerField('Head Coaches')
-    roster_bench_spots = models.PositiveIntegerField('Bench Spots')
+    roster_kickers = models.PositiveIntegerField(
+        'Kickers')
+    roster_punters = models.PositiveIntegerField(
+        'Punters')
+    roster_head_coaches = models.PositiveIntegerField(
+        'Head Coaches')
+    roster_bench_spots = models.PositiveIntegerField(
+        'Bench Spots')
     roster_injured_reserve_spots = models.PositiveIntegerField(
         'Injured Reserve Spots')
     # passing settings
-    passing_yards = models.FloatField('PASSING - Points Per Yard')
-    passing_touchdowns = models.FloatField('PASSING - Points Per Touchdown')
-    passing_interceptions = models.FloatField('PASSING - Points Per Interception')
+    passing_yards = models.FloatField(
+        'PASSING - Points Per Yard')
+    passing_touchdowns = models.FloatField(
+        'PASSING - Points Per Touchdown')
+    passing_interceptions = models.FloatField(
+        'PASSING - Points Per Interception')
     passing_two_point_conversions = models.FloatField(
         'PASSING - Points Per Two Point Conversion')
     # rushing settings
-    rushing_yards = models.FloatField('RUSHING - Points Per Yard')
-    rushing_touchdowns = models.FloatField('RUSHING - Points Per Touchdown')
+    rushing_yards = models.FloatField(
+        'RUSHING - Points Per Yard')
+    rushing_touchdowns = models.FloatField(
+        'RUSHING - Points Per Touchdown')
     rushing_two_point_conversions = models.FloatField(
         'RUSHING - Points Per Two Point Conversion')
     # receiving settings
-    receiving_receptions = models.FloatField('RECEIVING - Points Per Reception')
-    receiving_yards = models.FloatField('RECEIVING - Points Per Yard')
-    receiving_touchdowns = models.FloatField('RECEIVING - Points Per Touchdown')
+    receiving_receptions = models.FloatField(
+        'RECEIVING - Points Per Reception')
+    receiving_yards = models.FloatField(
+        'RECEIVING - Points Per Yard')
+    receiving_touchdowns = models.FloatField(
+        'RECEIVING - Points Per Touchdown')
     receiving_two_point_conversions = models.FloatField(
         'RECEIVING - Points Per Two Point Conversion')
     # individual miscellaneous settings
@@ -105,13 +138,18 @@ class LeagueSettings(models.Model):
         'TEAM DEFENSE/SPECIAL TEAMS - Points Per Blocked Punt or Field Goal Return Touchdown')
     dst_extra_points_returned = models.FloatField(
         'TEAM DEFENSE/SPECIAL TEAMS - Points Per Blocked Extra Point Return Touchdown')
-    dst_sacks = models.FloatField('TEAM DEFENSE/SPECIAL TEAMS - Points Per Sack')
+    dst_sacks = models.FloatField(
+        'TEAM DEFENSE/SPECIAL TEAMS - Points Per Sack')
     dst_blocked_punt_point_after_touchdown_field_goal = models.FloatField(
         'TEAM DEFENSE/SPECIAL TEAMS - Points Per Blocked Extra Point')
-    dst_interceptions = models.FloatField('TEAM DEFENSE/SPECIAL TEAMS - Points Per Interception')
-    dst_fumbles_recovered = models.FloatField('TEAM DEFENSE/SPECIAL TEAMS - Points Per Fumble Recovered')
-    dst_safeties = models.FloatField('TEAM DEFENSE/SPECIAL TEAMS - Points Per Safety')
-    dst_0_points_allowed = models.FloatField('TEAM DEFENSE/SPECIAL TEAMS - Points For 0 Points Allowed')
+    dst_interceptions = models.FloatField(
+        'TEAM DEFENSE/SPECIAL TEAMS - Points Per Interception')
+    dst_fumbles_recovered = models.FloatField(
+        'TEAM DEFENSE/SPECIAL TEAMS - Points Per Fumble Recovered')
+    dst_safeties = models.FloatField(
+        'TEAM DEFENSE/SPECIAL TEAMS - Points Per Safety')
+    dst_0_points_allowed = models.FloatField(
+        'TEAM DEFENSE/SPECIAL TEAMS - Points For 0 Points Allowed')
     dst_1_to_6_points_allowed = models.FloatField(
         'TEAM DEFENSE/SPECIAL TEAMS - Points For 1-6 Points Allowed')
     dst_7_to_13_points_allowed = models.FloatField(
