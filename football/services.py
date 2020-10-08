@@ -14,6 +14,7 @@ class Player:
     projected_points: float
     projections: Projections
     value: float = 0
+    position_rank: int = 0
 
 
 @dataclass
@@ -159,28 +160,6 @@ def _get_bye_week(team_abbreviation: str):
         return 0
     else:
         return team.bye_week     
-
-
-def _get_position_values(player_projections, league_settings):
-
-    position_values = PositionValues()  
-    positions_used = _get_positions_used(league_settings)
-
-    position_values_attributes = [attr for attr in dir(position_values) if not attr.startswith('__')]
-    for attribute in position_values_attributes:
-        position_value = _get_position_value(
-                                    position=attribute,
-                                    number_of_position_used=getattr(positions_used, attribute),
-                                    player_projections=player_projections,
-                                )
-        if (position_value > 0):
-            setattr(
-                position_values,
-                attribute,
-                position_value
-            )
-
-    return position_values
 
 
 def _get_dst_points(player_projections, league_settings):
@@ -355,15 +334,15 @@ def _get_kicker_points(player_projections, league_settings):
     return kicker_points
 
 
-def _get_number_of_position_used(position, league_settings):
+def _get_number_of_position_used(position, league_settings, roster_size_minus_worthless_positions):
     
     number_used = 0
-    starters = _get_roster_size_minus_k_and_dst(league_settings)
-    if (starters != 0):
-        number_used = ((((position) / starters) * 
-        league_settings.roster_bench_spots * 
-        league_settings.number_of_teams) + 
-        (league_settings.number_of_teams * (position)))
+
+    if (roster_size_minus_worthless_positions != 0):
+        number_used = ((((position) / roster_size_minus_worthless_positions) * 
+            league_settings.roster_bench_spots * 
+            league_settings.number_of_teams) + 
+            (league_settings.number_of_teams * (position)))
 
     return number_used
 
@@ -405,9 +384,32 @@ def _get_position_value(position, number_of_position_used, player_projections):
     return position_value
 
 
+def _get_position_values(player_projections, league_settings):
+
+    position_values = PositionValues()  
+    positions_used = _get_positions_used(league_settings)
+
+    position_values_attributes = [attr for attr in dir(position_values) if not attr.startswith('__')]
+    for attribute in position_values_attributes:
+        position_value = _get_position_value(
+                                    position=attribute,
+                                    number_of_position_used=getattr(positions_used, attribute),
+                                    player_projections=player_projections,
+                                )
+        if (position_value > 0):
+            setattr(
+                position_values,
+                attribute,
+                position_value
+            )
+
+    return position_values
+
+
 def _get_positions_used(league_settings):
 
     positions_used = PositionsUsed()
+    roster_size = _get_roster_size_minus_worthless_positions(league_settings)
 
     positions_used_attributes = [attr for attr in dir(positions_used) if not attr.startswith('__')]
     for attribute in positions_used_attributes:
@@ -427,7 +429,8 @@ def _get_positions_used(league_settings):
                     position=getattr(
                         league_settings,
                         ('roster_%s' % attribute)),
-                    league_settings=league_settings))
+                    league_settings=league_settings,
+                    roster_size_minus_worthless_positions=roster_size))
 
     return positions_used
 
@@ -444,35 +447,18 @@ def _get_projected_games_based_on_std_deviation(start: float, standard_deviation
     return projected_games
 
 
-def _get_roster_size_minus_k_and_dst(league_settings):
+def _get_roster_size_minus_worthless_positions(league_settings):
 
-    roster_spots = [
-        league_settings.roster_quarterbacks,
-        league_settings.roster_team_quarterbacks,
-        league_settings.roster_running_backs,
-        league_settings.roster_wide_receivers,
-        league_settings.roster_tight_ends,
-        league_settings.roster_flex_running_back_wide_receiver,
-        league_settings.roster_flex_wide_receiver_tight_end,
-        league_settings.roster_flex_running_back_wide_receiver_tight_end,
-        league_settings.roster_offensive_players,
-        league_settings.roster_defensive_tackles,
-        league_settings.roster_defensive_lines,
-        league_settings.roster_linebackers,
-        league_settings.roster_edge_rushers,
-        league_settings.roster_defensive_lines,
-        league_settings.roster_cornerbacks,
-        league_settings.roster_safeties,
-        league_settings.roster_defensive_backs,
-        league_settings.roster_defensive_players,
-        league_settings.roster_punters,
-        league_settings.roster_head_coaches,
-        league_settings.roster_bench_spots,
-    ]
-    
-    roster_size_minus_k_and_dst = sum(roster_spots)
-    
-    return roster_size_minus_k_and_dst
+    roster_size_minus_worthless_positions = 0
+
+    league_settings_attributes = [attr for attr in dir(league_settings) if attr.startswith('roster_')]
+    for attribute in league_settings_attributes:
+        roster_size_minus_worthless_positions += getattr(league_settings, attribute)
+
+    for worthless_position in _positions_to_only_draft_one:
+        roster_size_minus_worthless_positions -= getattr(league_settings, f'roster_{worthless_position}')
+
+    return roster_size_minus_worthless_positions
 
 
 def _set_player_values(players, position_values):
@@ -486,10 +472,12 @@ def _set_player_values(players, position_values):
 
 def _rank_and_sort_players(players, league_settings):
     
-    sorted_players= sorted(players, key= attrgetter('projected_points'), reverse=True)
+    sorted_players = sorted(players, key= attrgetter('projected_points'), reverse=True)
 
     position_values = _get_position_values(sorted_players, league_settings)
 
     sorted_players = _set_player_values(sorted_players, position_values)
+
+    sorted_players = sorted(players, key= attrgetter('value'), reverse=True)
 
     return sorted_players

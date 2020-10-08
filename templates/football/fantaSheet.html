@@ -3,11 +3,12 @@
 {% for player in fantaSheet_values %}
 
     <p>
-        {{forloop.counter}} - {{ player.name }}, 
+        {{ forloop.counter }} - {{ player.name }}, 
         {{ player.team }},
         {{ player.bye_week }},
-        {{player.position}}, 
-        {{ player.projected_points }} 
+        {{ player.position }}, 
+        {{ player.projected_points }},
+        {{ player.value }} 
         <!--{{ player.projections.rushing_yards }}-->
     </p>
 
