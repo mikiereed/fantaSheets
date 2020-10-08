@@ -15,6 +15,16 @@ class Player:
 
 
 @dataclass
+class DraftValues:
+    quarterbacks: float = 10000
+    running_backs: float = 10001
+    wide_receivers: float = 10002
+    tight_ends: float = 10003
+    kickers: float = 10004
+    team_defense_special_teams: float = 10005
+
+
+@dataclass
 class PositionsUsed:
     quarterbacks: float = 0
     running_backs: float = 0
@@ -147,6 +157,28 @@ def _get_bye_week(team_abbreviation: str):
         return 0
     else:
         return team.bye_week     
+
+
+def _get_draft_values(player_projections, league_settings):
+
+    draft_values = DraftValues()  
+    positions_used = _get_positions_used(league_settings)
+
+    draft_values_attributes = [attr for attr in dir(draft_values) if not attr.startswith('__')]
+    for attribute in draft_values_attributes:
+        position_draft_value = _get_position_draft_value(
+                                    position=attribute,
+                                    number_of_position_used=getattr(positions_used, attribute),
+                                    player_projections=player_projections,
+                                )
+        if (position_draft_value > 0):
+            setattr(
+                draft_values,
+                attribute,
+                position_draft_value
+            )
+
+    return draft_values
 
 
 def _get_dst_points(player_projections, league_settings):
@@ -323,6 +355,10 @@ def _get_number_of_position_used(position, league_settings):
     return number_used
 
 
+def _get_position_draft_value(position, number_of_position_used, player_projections):
+    pass
+
+
 def _get_positions_used(league_settings):
 
     positions_used = PositionsUsed()
@@ -397,8 +433,8 @@ def _rank_and_sort_players(players, league_settings):
     
     sorted_players= sorted(players, key= attrgetter('projected_points'), reverse=True)
 
-    roster_size_minus_k_and_dst = _get_roster_size_minus_k_and_dst(league_settings)
+    # roster_size_minus_k_and_dst = _get_roster_size_minus_k_and_dst(league_settings)
 
-    positions_used = _get_positions_used(league_settings)
+    draft_values = _get_draft_values(players, league_settings)
 
     return sorted_players
