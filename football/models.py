@@ -227,7 +227,7 @@ class Projections(models.Model):
 class Team(models.Model):
     abbreviation = models.CharField(
         "Team Abbr", max_length=4, unique=True)
-    city = models.CharField("Team", max_length=25)
+    city = models.CharField(max_length=25)
     mascot = models.CharField(max_length=20)
     bye_week = models.PositiveIntegerField()
 

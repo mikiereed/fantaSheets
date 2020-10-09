@@ -7,8 +7,9 @@
         {{ player.team }},
         {{ player.bye_week }},
         {{ player.position }}, 
-        {{ player.projected_points }},
-        {{ player.value }} 
+        {{ player.projected_points | floatformat:2 }},
+        {{ player.value | floatformat:2 }},
+        {{ player.position_rank }} 
         <!--{{ player.projections.rushing_yards }}-->
     </p>
 
