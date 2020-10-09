@@ -1,6 +1,6 @@
 from collections import namedtuple
 from dataclasses import dataclass
-from football.models import LeagueSettings, Position, Projections, Team
+from football.models import LeagueSettings, MultiplePositionRosterSpot, Position, Projections, Team
 from math import ceil, floor
 from operator import attrgetter
 
@@ -57,10 +57,6 @@ _roster_spots_not_used_for_starter_calculations = [
     'bench_spots',
     'injured_reserve_spots',
 ]
-
-# loop object attributes and values
-# for attr, value in positions_used.__dict__.items():
-#     print(attr, value)
 
 
 def calculate_fantaSheet(league_settings):
@@ -394,23 +390,34 @@ def _get_position_value(position, number_of_position_used, player_projections):
         return -1
 
     position_value = -1
-    ceiling_player = ceil(number_of_position_used) - 1
-    floor_player = floor(number_of_position_used) - 1
+    low_player_value = 0
+    high_player_value = 0
+    ceiling_player = ceil(number_of_position_used)
+    floor_player = floor(number_of_position_used)
     decimal = number_of_position_used - floor(number_of_position_used)
     position_abbreviation = _get_position_abbreviation(position)
 
-    projections_one_position = []
-
     for player in player_projections:
+        assert 0 != player.position_rank # players need rankings
         if (player.position.lower() == position_abbreviation):
-            projections_one_position.append(player.projected_points)
-    
-    if (decimal > 0):
-        low_player_value = projections_one_position[ceiling_player] * decimal
-        high_player_value = projections_one_position[floor_player] * (1 - decimal)
-        position_value = high_player_value + low_player_value
+            if (player.position_rank == ceiling_player):
+                low_player_value = player.projected_points
+            elif (player.position_rank == floor_player):
+                high_player_value = player.projected_points
+
+            # break out for speed, since player is already found
+            if (low_player_value > 0 and high_player_value > 0):
+                break
+            if (low_player_value > 0 or high_player_value > 0):
+                if (ceiling_player == floor_player):
+                    break
+
+    if (decimal > 0): # combine 2 values
+        low_value = low_player_value * decimal
+        high_value = high_player_value* (1 - decimal)
+        position_value = high_value + low_value
     else:
-        position_value = projections_one_position[floor_player]
+        position_value = low_player_value
 
     return position_value
 
@@ -419,6 +426,8 @@ def _get_position_values(player_projections, league_settings):
 
     position_values = PositionValues()  
     positions_used = _get_positions_used(league_settings)
+
+    positions_used = _get_special_roster_type_values(positions_used, player_projections)
 
     position_values_attributes = [attr for attr in dir(position_values) if not attr.startswith('__')]
     for attribute in position_values_attributes:
@@ -433,6 +442,8 @@ def _get_position_values(player_projections, league_settings):
                 attribute,
                 position_value
             )
+
+    
 
     return position_values
 
@@ -478,6 +489,18 @@ def _get_projected_games_based_on_std_deviation(start: float, standard_deviation
     return projected_games
 
 
+def _get_special_roster_type_values(positions_used, player_projections):
+
+    special_roster_spots = MultiplePositionRosterSpot.objects.all()
+  
+    for special_roster_spot in special_roster_spots:
+        if (getattr(positions_used, special_roster_spot.title) > 0):
+            # print(special_roster_spot, getattr(positions_used, special_roster_spot.title), special_roster_spot.positions.all())
+            positions_used = _update_positions_used(positions_used, special_roster_spot, player_projections)
+
+    return positions_used
+
+
 def _get_starters_count_minus_worthless_positions(league_settings):
 
     starters_minus_worthless_positions = 0
@@ -491,15 +514,6 @@ def _get_starters_count_minus_worthless_positions(league_settings):
 
     return starters_minus_worthless_positions
 
-
-def _set_player_values(players, position_values):
-
-    for player in players:
-        position = _get_full_position_string(position_abbreviation=player.position)
-        position_value = getattr(position_values, position)
-        player.value = player.projected_points - position_value
-    
-    return players
 
 def _rank_and_sort_players(players, league_settings):
     
@@ -515,3 +529,50 @@ def _rank_and_sort_players(players, league_settings):
 
     return sorted_players
 
+
+def _set_player_values(players, position_values):
+
+    for player in players:
+        position = _get_full_position_string(position_abbreviation=player.position)
+        position_value = getattr(position_values, position)
+        player.value = player.projected_points - position_value
+    
+    return players
+
+
+def _update_positions_used(positions_used, special_roster_spot, player_projections):
+    
+    possible_positions = special_roster_spot.positions.all()
+    amount_needed = ceil(getattr(positions_used, special_roster_spot.title)) 
+    position_ranges = []
+    possible_players = []
+
+    for position in possible_positions:
+        position_range = {
+            "position_abbreviation" : _get_position_abbreviation(position.name),
+            "start_index" : getattr(positions_used, position.name),
+            "end_index" : getattr(positions_used, position.name) + amount_needed,
+        }
+        position_ranges.append(position_range)
+
+    for player in player_projections:
+        for position_range in position_ranges:
+            if (
+                player.position == position_range['position_abbreviation']
+                and player.position_rank > position_range['start_index']
+                and player.position_rank <= position_range['end_index']
+                ):
+                possible_players.append(player)
+
+    players_to_use = possible_players[:amount_needed]
+
+    for position in possible_positions:
+        position_abbreviation = _get_position_abbreviation(position.name)
+        position_count = sum(player.position == position_abbreviation for player in players_to_use)
+        setattr(
+            positions_used, 
+            position.name, 
+            getattr(positions_used, position.name) + position_count
+            )
+
+    return positions_used

@@ -1,6 +1,6 @@
 from import_export.admin import ImportExportModelAdmin
 from django.contrib import admin
-from .models import LeagueSettings, Position, Projections, Team
+from .models import LeagueSettings, MultiplePositionRosterSpot, Position, Projections, Team
 
 
 @admin.register(LeagueSettings)
@@ -11,6 +11,12 @@ class LeagueSettingsAdmin(admin.ModelAdmin):
     search_fields = ('owner', 'title')
     list_per_page = 100
     # list_editable = ('league_hosting_site',)
+
+
+@admin.register(MultiplePositionRosterSpot)
+class MultiplePositionRosterSpotAdmin(admin.ModelAdmin):
+    list_display = ('id', 'title',)
+    list_display_links = ('id', 'title')
 
 
 @admin.register(Position)

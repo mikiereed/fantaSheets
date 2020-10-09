@@ -180,14 +180,6 @@ class LeagueSettings(models.Model):
         return self.title
 
 
-class Position(models.Model):
-    name = models.CharField(max_length=35)
-    abbreviation = models.CharField(max_length=5)
-
-    class Meta:
-        ordering = ('name',)
-
-
 class Projections(models.Model):
     player = models.CharField(max_length=50)
     team = models.CharField(max_length=4)
@@ -236,3 +228,26 @@ class Team(models.Model):
 
     def __str__(self):
         return self.city + ' ' + self.mascot
+
+
+class Position(models.Model):
+    name = models.CharField(max_length=35)
+    abbreviation = models.CharField(max_length=5)
+
+    class Meta:
+        ordering = ('name',)
+
+    def __str__(self):
+        return self.name
+
+
+class MultiplePositionRosterSpot(models.Model):
+    title = models.CharField(max_length=50)
+    positions =  models.ManyToManyField(Position)
+
+    class Meta:
+        ordering = ('title',)
+    
+    def __str__(self):
+        return self.title
+
