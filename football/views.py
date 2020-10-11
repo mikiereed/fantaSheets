@@ -16,7 +16,8 @@ def fantaSheet(request, fantaSheet_id):
     fantaSheet_values = calculate_fantaSheet(league_settings)
 
     context = {
-        'fantaSheet_values': fantaSheet_values
+        'fantaSheet_values': fantaSheet_values,
+        'league_settings' : league_settings,
     }
 
     return render(request, 'football/fantaSheet.html', context)

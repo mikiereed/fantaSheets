@@ -143,3 +143,77 @@ img {
         font-size: 40px;
     }
 }
+
+
+/*------------ FantaSheet CSS -----------------------------------*/
+
+.tableFantaSheet tr:nth-child(odd),
+.tableFantaSheetDetailed tr:nth-child(odd),
+.tableFantaSheetNotes tr:nth-child(odd),
+.tableFantaSheetSimple tr:nth-child(odd),
+.tableList tr:nth-child(odd),
+.notesTable tr:nth-child(odd),
+.formSettings tr:nth-child(odd) {
+    background: #d9dce2;
+}
+
+.tableFantaSheet th,
+.tableFantaSheetDetailed th,
+.tableFantaSheetNotes th,
+.tableFantaSheetSimple th,
+.tableList th,
+.notesTable th,
+.formSettings {
+    background: #fff;
+    font-weight: bold;
+}
+
+.tableHeaders {
+    width: 100%;
+    font-size: 10px;
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+}
+
+.fantaSheetLogo {
+    width: 160px;
+    height: 75px;
+    padding-bottom: -25px;
+}
+
+.ad {
+    width: 160px;
+    height: 75px;
+    padding-bottom: -25px;
+}
+
+.printAd {
+    display: none;
+}
+
+.updated {
+    font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif;
+    text-align: center;
+    font-size: 80%;
+    padding-bottom: 0;
+    padding-top: 0;
+    margin: 0;
+    line-height: 1;
+}
+
+.tableList {
+    table-layout: fixed;
+    font-size: 100%;
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    line-height: 1.25;
+    display: table;
+    border-bottom: 1.5px solid #292627;
+    border-top: 1.5px solid #292627;
+}
+
+.tableList tD {
+    padding: .5% 0;
+    display: table-cell;
+    vertical-align: middle;
+}
