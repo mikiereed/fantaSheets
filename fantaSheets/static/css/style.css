@@ -217,3 +217,36 @@ img {
     display: table-cell;
     vertical-align: middle;
 }
+
+.centered {
+    text-align: center;
+}
+
+.navbar img,
+.navbar .noPadding,
+h4.noPadding {
+    padding: 0;
+    margin: 0;
+}
+
+.columns {
+    -webkit-column-count: 3;
+    -moz-column-count: 3;
+    column-count: 3;
+    -webkit-column-width: auto;
+    -moz-column-width: auto;
+    column-width: auto;
+    column-fill: balance;
+    -webkit-column-gap: 1px;
+    -moz-column-gap: 1px;
+    column-gap: 1px;
+    -webkit-column-rule: 1px solid black;
+    -moz-column-rule: 1px solid black;
+    column-rule: 1px solid black;
+    border: 1px solid black;
+}
+
+.columns p {
+    font-size: 80%;
+    padding-bottom: 0;
+}
