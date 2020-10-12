@@ -14,43 +14,98 @@
             <form action="search.html">
               <!-- Form Row 1 -->
               <div class="form-row">
-                <div class="col-md-4 mb-3">
-                  <label class="sr-only">Keywords</label>
-                  <input type="text" name="keywords" class="form-control" placeholder="Keyword (Pool, Garage, etc)">
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <label class="sr-only">QBs</label>
-                  <input type="text" name="city" class="form-control" placeholder="City">
-                </div>
-
-                <div class="col-md-4 mb-3">
-                  <label class="sr-only">Rbs</label>
-                  <select name="state" class="form-control">
-                    <option selected="true" disabled="disabled">State (All)</option>
-                    <option value="AL">Alabama</option>
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">Teams</label>
+                  <select name="number_of_teams" class="form-control">
+                    <option selected="true" disabled="disabled">Teams</option>
+                    <option value="0">4</option>
+                    <option value="1">6</option>
+                    <option value="2">8</option>
+                    <option value="3">10</option>
+                    <option value="0">12</option>
+                    <option value="1">14</option>
+                    <option value="2">16</option>
                   </select>
                 </div>
+
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">PPR</label>
+                  <select name="receiving_receptions" class="form-control">
+                    <option selected="true" disabled="disabled">PPR</option>
+                    <option value="0">None</option>
+                    <option value=".5">Half Point</option>
+                    <option value="1">Full Point</option>
+                  </select>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">Passing Touchdown</label>
+                  <select name="passing_touchdowns" class="form-control">
+                    <option selected="true" disabled="disabled">Passing TDs</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                  </select>
+                </div>
+                
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">Flex</label>
+                  <select name="roster_flex" class="form-control">
+                    <option selected="true" disabled="disabled">Flex</option>
+                    <option value="none">None</option>
+                    <option value="roster_flex_running_back_wide_receiver">Flex RB/WR</option>
+                    <option value="roster_flex_running_back_wide_receiver_tight_end">Flex RB/WR/TE</option>
+                    <option value="roster_flex_wide_receiver_tight_end">Flex WR/TE</option>
+                    <option value="roster_offensive_player">Offensive Player</option>
+                  </select>
+                </div>                
               </div>
               <!-- Form Row 2 -->
               <div class="form-row">
-                <div class="col-md-6 mb-3">
-                  <label class="sr-only">WRs</label>
-                  <select name="bedrooms" class="form-control">
-                    <option selected="true" disabled="disabled">Bedrooms (All)</option>
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">QBs</label>
+                  <select name="roster_quarterbacks" class="form-control">
+                    <option selected="true" disabled="disabled">QBs</option>
+                    <option value="0">0</option>
                     <option value="1">1</option>
                     <option value="2">2</option>
+                    <option value="3">3</option>
                   </select>
                 </div>
-                <div class="col-md-6 mb-3">
-                  <select name="price" class="form-control" id="type">
-                    <option selected="true" disabled="disabled">Flex</option>
-                    <option value="100000">$100,000</option>
-                    <option value="1000000">$1M+</option>
+
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">RBs</label>
+                  <select name="roster_running_backs" class="form-control">
+                    <option selected="true" disabled="disabled">RBs</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">WRs</label>
+                  <select name="roster_wide_receivers" class="form-control">
+                    <option selected="true" disabled="disabled">WRs</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                  </select>
+                </div>
+
+                <div class="col-md-3 mb-3">
+                  <label class="sr-only">TEs</label>
+                  <select name="roster_tight_ends" class="form-control">
+                    <option selected="true" disabled="disabled">TEs</option>
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
                   </select>
                 </div>
               </div>
-              <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+              <button class="btn btn-secondary btn-block mt-4" type="submit">Create FantaSheet</button>
             </form>
           </div>
         </div>
@@ -61,141 +116,16 @@
   <!-- Listings -->
   <section id="listings" class="py-5">
     <div class="container">
-      <h3 class="text-center mb-3">Latest Listings</h3>
+      <h3 class="text-center mb-3">Standard Leagues</h3>
       <div class="row">
-        <!-- Listing 1 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-          <div class="card listing-preview">
-            <img class="card-img-top" src="assets/img/homes/home-1.jpg" alt="">
-            <div class="card-img-overlay">
-              <h2>
-                <span class="badge badge-secondary text-white">$490,000</span>
-              </h2>
-            </div>
-            <div class="card-body">
-              <div class="listing-heading text-center">
-                <h4 class="text-primary">45 Drivewood Circle</h4>
-                <p>
-                  <i class="fas fa-map-marker text-secondary"></i> Norwood MA, 02062</p>
-              </div>
-              <hr>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-th-large"></i> Sqft: 2500</div>
-                <div class="col-6">
-                  <i class="fas fa-car"></i> Garage: 2</div>
-              </div>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-bed"></i> Bedrooms: 3</div>
-                <div class="col-6">
-                  <i class="fas fa-bath"></i> Bathrooms: 2</div>
-              </div>
-              <hr>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-user"></i> Kyle Brown</div>
-              </div>
-              <div class="row text-secondary pb-2">
-                <div class="col-6">
-                  <i class="fas fa-clock"></i> 5 days ago</div>
-              </div>
-              <hr>
-              <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Listing 2 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-          <div class="card listing-preview">
-            <img class="card-img-top" src="assets/img/homes/home-2.jpg" alt="">
-            <div class="card-img-overlay">
-              <h2>
-                <span class="badge badge-secondary text-white">$550,000</span>
-              </h2>
-            </div>
-            <div class="card-body">
-              <div class="listing-heading text-center">
-                <h4 class="text-primary">18 Jefferson Lane</h4>
-                <p>
-                  <i class="fas fa-map-marker text-secondary"></i> Woburn MA, 01801</p>
-              </div>
-              <hr>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-th-large"></i> Sqft: 3200</div>
-                <div class="col-6">
-                  <i class="fas fa-car"></i> Garage: 1</div>
-              </div>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-bed"></i> Bedrooms: 4</div>
-                <div class="col-6">
-                  <i class="fas fa-bath"></i> Bathrooms: 2.5</div>
-              </div>
-              <hr>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-user"></i> Mark Hudson</div>
-              </div>
-              <div class="row text-secondary pb-2">
-                <div class="col-6">
-                  <i class="fas fa-clock"></i> 5 days ago</div>
-              </div>
-              <hr>
-              <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-            </div>
-          </div>
-        </div>
-
-        <!-- Listing 3 -->
-        <div class="col-md-6 col-lg-4 mb-4">
-          <div class="card listing-preview">
-            <img class="card-img-top" src="assets/img/homes/home-3.jpg" alt="">
-            <div class="card-img-overlay">
-              <h2>
-                <span class="badge badge-secondary text-white">$580,000</span>
-              </h2>
-            </div>
-            <div class="card-body">
-              <div class="listing-heading text-center">
-                <h4 class="text-primary">187 Woodrow Street</h4>
-                <p>
-                  <i class="fas fa-map-marker text-secondary"></i> Salem MA, 01915</p>
-              </div>
-              <hr>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-th-large"></i> Sqft: 3107</div>
-                <div class="col-6">
-                  <i class="fas fa-car"></i> Garage: 0</div>
-              </div>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-bed"></i> Bedrooms: 4</div>
-                <div class="col-6">
-                  <i class="fas fa-bath"></i> Bathrooms: 3</div>
-              </div>
-              <hr>
-              <div class="row py-2 text-secondary">
-                <div class="col-6">
-                  <i class="fas fa-user"></i> Mark Hudson</div>
-              </div>
-              <div class="row text-secondary pb-2">
-                <div class="col-6">
-                  <i class="fas fa-clock"></i> 5 days ago</div>
-              </div>
-              <hr>
-              <a href="listing.html" class="btn btn-primary btn-block">More Info</a>
-            </div>
-          </div>
-        </div>
-
+          {% for default_sheet in default_sheets|slice:':3' %}  
+              {% include 'partials/_listing.html' with listing=default_sheet %}
+          {% endfor %}
       </div>
     </div>
   </section>
 
+  <!-- Services -->
   <section id="services" class="py-5 bg-secondary text-white">
     <div class="container">
       <div class="row text-center">
