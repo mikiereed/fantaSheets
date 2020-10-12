@@ -147,6 +147,16 @@ img {
 
 /*------------ FantaSheet CSS -----------------------------------*/
 
+.tableFantaSheet,
+.tableFantaSheetSimple {
+    /* font-size: 10px; */
+    /* table-layout: fixed; */
+    width: 100%;
+    border-collapse: collapse;
+    /* font-family: 'Trebuchet MS', Arial, Helvetica, sans-serif; */
+    text-align: center;
+}
+
 .tableFantaSheet tr:nth-child(odd),
 .tableFantaSheetDetailed tr:nth-child(odd),
 .tableFantaSheetNotes tr:nth-child(odd),
@@ -164,7 +174,7 @@ img {
 .tableList th,
 .notesTable th,
 .formSettings {
-    background: #fff;
+    background: #d9dce2;
     font-weight: bold;
 }
 
@@ -181,7 +191,7 @@ img {
 }
 
 .ad {
-    width: 160px;
+    width: 75px;
     height: 75px;
     padding-bottom: -25px;
 }
@@ -249,4 +259,13 @@ h4.noPadding {
 .columns p {
     font-size: 80%;
     padding-bottom: 0;
+}
+
+.fantaSheet {
+    min-height: 90%;
+    margin: 0 5% 0 5%;
+    background-color: #ffffff;
+    padding: 42px 5% 2% 5%;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
 }

@@ -81,7 +81,6 @@ def calculate_fantaSheet(league_settings):
 
     return ranked_and_sorted_players
 
-
 def _calculate_dst_points_for_yards_or_points(setting_value, low, high, projected_games, projected_year: bool):
     
     if (setting_value == 0):
@@ -120,7 +119,6 @@ def _calculate_dst_points_for_yards_or_points(setting_value, low, high, projecte
 
     return points
 
-
 def _calculate_projected_points(player_projections, league_settings):
     
     # passing
@@ -150,7 +148,6 @@ def _calculate_projected_points(player_projections, league_settings):
 
     return projected_player_points
 
-
 def _get_bye_week(team_abbreviation: str):
     
     try:
@@ -159,7 +156,6 @@ def _get_bye_week(team_abbreviation: str):
         return 0
     else:
         return team.bye_week     
-
 
 def _get_dst_points(player_projections, league_settings):
     
@@ -193,7 +189,6 @@ def _get_dst_points(player_projections, league_settings):
     # dst_points += player_projections.dst_yards_against * league_settings.
 
     return dst_points
-
 
 def _get_dst_points_for_points_against(projected_against, league_settings):
     
@@ -279,7 +274,6 @@ def _get_dst_points_for_points_against(projected_against, league_settings):
     
     return dst_points_against_points
 
-
 def _get_full_position_string(position_abbreviation):
 
     try:
@@ -288,7 +282,6 @@ def _get_full_position_string(position_abbreviation):
         return 0
     else:
         return position.name 
-
 
 def _get_kicker_points(player_projections, league_settings):
     
@@ -332,7 +325,6 @@ def _get_kicker_points(player_projections, league_settings):
 
     return kicker_points
 
-
 def _set_player_position_ranks(sorted_players):
 
     # positions = Position.objects.only('abbreviation')
@@ -358,9 +350,6 @@ def _set_player_position_ranks(sorted_players):
         
     return sorted_players
 
-    
-
-
 def _get_number_of_position_used(position, league_settings, starters_count_minus_worthless_positions):
     
     number_used = 0
@@ -373,7 +362,6 @@ def _get_number_of_position_used(position, league_settings, starters_count_minus
 
     return number_used
 
-
 def _get_position_abbreviation(position):
 
     try:
@@ -382,7 +370,6 @@ def _get_position_abbreviation(position):
         return 0
     else:
         return position.abbreviation 
-
 
 def _get_position_value(position, number_of_position_used, player_projections):
 
@@ -421,7 +408,6 @@ def _get_position_value(position, number_of_position_used, player_projections):
 
     return position_value
 
-
 def _get_position_values(player_projections, league_settings):
 
     position_values = PositionValues()  
@@ -446,7 +432,6 @@ def _get_position_values(player_projections, league_settings):
     
 
     return position_values
-
 
 def _get_positions_used(league_settings):
 
@@ -476,7 +461,6 @@ def _get_positions_used(league_settings):
 
     return positions_used
 
-
 def _get_projected_games_based_on_std_deviation(start: float, standard_deviation: float):
     
     projected_games = ProjectedGames(
@@ -488,7 +472,6 @@ def _get_projected_games_based_on_std_deviation(start: float, standard_deviation
 
     return projected_games
 
-
 def _get_special_roster_type_values(positions_used, player_projections):
 
     special_roster_spots = MultiplePositionRosterSpot.objects.all()
@@ -499,7 +482,6 @@ def _get_special_roster_type_values(positions_used, player_projections):
             positions_used = _update_positions_used(positions_used, special_roster_spot, player_projections)
 
     return positions_used
-
 
 def _get_starters_count_minus_worthless_positions(league_settings):
 
@@ -513,7 +495,6 @@ def _get_starters_count_minus_worthless_positions(league_settings):
         starters_minus_worthless_positions -= getattr(league_settings, f'roster_{worthless_position}')
 
     return starters_minus_worthless_positions
-
 
 def _rank_and_sort_players(players, league_settings):
     
@@ -529,7 +510,6 @@ def _rank_and_sort_players(players, league_settings):
 
     return sorted_players
 
-
 def _set_player_values(players, position_values):
 
     for player in players:
@@ -538,7 +518,6 @@ def _set_player_values(players, position_values):
         player.value = player.projected_points - position_value
     
     return players
-
 
 def _update_positions_used(positions_used, special_roster_spot, player_projections):
     
