@@ -4,7 +4,7 @@ from .models import LeagueSettings, MultiplePositionRosterSpot, Position, Projec
 
 
 @admin.register(LeagueSettings)
-class LeagueSettingsAdmin(admin.ModelAdmin):
+class LeagueSettingsAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'owner', 'title', 'league_hosting_site')
     list_display_links = ('id', 'title')
     list_filter = ('owner', 'league_hosting_site')
@@ -14,13 +14,13 @@ class LeagueSettingsAdmin(admin.ModelAdmin):
 
 
 @admin.register(MultiplePositionRosterSpot)
-class MultiplePositionRosterSpotAdmin(admin.ModelAdmin):
+class MultiplePositionRosterSpotAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'title',)
     list_display_links = ('id', 'title')
 
 
 @admin.register(Position)
-class PositionAdmin(admin.ModelAdmin):
+class PositionAdmin(ImportExportModelAdmin, admin.ModelAdmin):
     list_display = ('id', 'name', 'abbreviation')
     list_display_links = ('id', 'name', 'abbreviation')
 
