@@ -15,6 +15,7 @@ class Player:
     projections: Projections
     value: float = 0
     position_rank: int = 0
+    overall_rank: int = 0
 
 
 @dataclass
@@ -325,31 +326,6 @@ def _get_kicker_points(player_projections, league_settings):
 
     return kicker_points
 
-def _set_player_position_ranks(sorted_players):
-
-    # positions = Position.objects.only('abbreviation')
-    positions = Position.objects.values_list('abbreviation', flat=True)
-
-    assert positions
-
-    position_ranks = []
-
-    for position in positions:
-        position_rank = {
-            'position' : position,
-            'rank' : 1
-        }
-        position_ranks.append(position_rank)
-
-    for player in sorted_players:
-        for position in position_ranks:
-            if player.position == position['position']:
-                player.position_rank = position['rank']
-                position['rank'] += 1
-                break
-        
-    return sorted_players
-
 def _get_number_of_position_used(position, league_settings, starters_count_minus_worthless_positions):
     
     number_used = 0
@@ -429,8 +405,6 @@ def _get_position_values(player_projections, league_settings):
                 position_value
             )
 
-    
-
     return position_values
 
 def _get_positions_used(league_settings):
@@ -508,6 +482,43 @@ def _rank_and_sort_players(players, league_settings):
 
     sorted_players = sorted(players, key= attrgetter('value'), reverse=True)
 
+    sorted_players = _set_player_overall_ranks(sorted_players)
+
+    return sorted_players
+
+def _set_player_overall_ranks(sorted_players):
+
+    rank = 1
+
+    for player in sorted_players:
+        player.overall_rank = rank
+        rank += 1
+
+    return sorted_players
+
+def _set_player_position_ranks(sorted_players):
+
+    # positions = Position.objects.only('abbreviation')
+    positions = Position.objects.values_list('abbreviation', flat=True)
+
+    assert positions
+
+    position_ranks = []
+
+    for position in positions:
+        position_rank = {
+            'position' : position,
+            'rank' : 1
+        }
+        position_ranks.append(position_rank)
+
+    for player in sorted_players:
+        for position in position_ranks:
+            if player.position == position['position']:
+                player.position_rank = position['rank']
+                position['rank'] += 1
+                break
+        
     return sorted_players
 
 def _set_player_values(players, position_values):

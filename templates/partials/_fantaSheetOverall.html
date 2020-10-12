@@ -19,7 +19,7 @@
   {% for player in players %}
     <tr>
       <td class="centered">
-        {{ forloop.counter }}
+        {{ player.overall_rank }}
       </td>
       <td class="centered">
         {{ player.position | upper }}{{ player.position_rank }}
