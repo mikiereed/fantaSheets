@@ -1,0 +1,170 @@
+{% extends "base.html" %}
+{% block title %} | Settings Input{% endblock title %}
+{% block content %}
+  <section id="create" class="bg-light py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6 mx-auto">
+          <div class="card">
+            <div class="card-header bg-primary text-white">
+              <h4>
+                <i class="fas fa-user-edit"></i> Create</h4>
+            </div>
+            <div class="card-body">
+              <!-- Alerts -->
+              {% include 'partials/_alerts.html' %}
+              <form id="league_settings" action="{% url 'create' %}" method="POST">
+                {% csrf_token %}
+                {% for field in league_settings_form %}
+                  <div class="form-group {{ field.name|slice:':4' }}">
+                      {{ field.errors }}
+                      {{ field.label_tag }} {{ field }}
+                      {% if field.help_text %}
+                      <p class="help">{{ field.help_text|safe }}</p>
+                      {% endif %}
+                  </div>
+                {% endfor %}
+                {% if user.is_authenticated %}
+                  <input type="hidden" name="owner" value="{{ user.id }}" id="id_owner">
+                {% else %}
+                  <input type="hidden" name="owner" value="0" id="id_owner">
+                {% endif %}
+                <input type="submit" value="Create fantaSheet" class="btn btn-secondary btn-block" id="id_submit">
+              </form>  
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock content %}
+
+{% block javascript %}
+  <script type="text/javascript">
+        $(document).ready(function () {
+            $('#id_league_hosting_site').focus();
+            
+            hide_settings_not_needed();
+
+            $('#id_league_hosting_site').click(function () {
+              hide_settings_not_needed();
+            });
+
+            $('#id_league_hosting_site').change(function () {
+              hide_settings_not_needed();
+            });
+
+            $('#id_number_of_teams').click(function () {
+              hide_settings_not_needed();
+            });
+
+            $('#id_number_of_teams').change(function () {
+              hide_settings_not_needed();
+            });
+
+            $('.rost').click(function() {
+              hide_settings_not_needed();
+            })
+
+            $('.rost').change(function () {
+              hide_settings_not_needed();              
+            });
+
+            $('#league_settings').submit(function () {
+              // if !(roster_is_greater_than_1())
+              //   return false;
+              set_null_fields_to_zero();
+              return true;
+            })
+
+            function hide_settings_not_needed() {
+              // toggle roster settings
+              var roster_settings_needed = $('#id_number_of_teams').val() > 0;
+              $('.rost').toggle(roster_settings_needed);
+
+              // toggle passing settings
+              var passing_settings_needed =
+                ($('#id_roster_offensive_players').val() + 
+                $('#id_roster_quarterbacks').val()) > 0;
+              $('.pass').toggle(passing_settings_needed);
+
+              // toggle rushing settings
+              var rushing_settings_needed =
+                ($('#id_roster_offensive_players').val() + 
+                $('#id_roster_quarterbacks').val() +
+                $('#id_roster_running_backs').val() +
+                $('#id_roster_wide_receivers').val() +
+                $('#id_roster_tight_ends').val() +
+                $('#id_roster_flex_running_back_wide_receiver').val() +
+                $('#id_roster_flex_running_back_wide_receiver_tight_end').val() + 
+                $('#id_roster_flex_wide_receiver_tight_end').val()) > 0;
+              $('.rush').toggle(rushing_settings_needed);
+            
+              // toggle receiving settings
+              var receiving_settings_needed =
+                ($('#id_roster_offensive_players').val() + 
+                $('#id_roster_running_backs').val() +
+                $('#id_roster_wide_receivers').val() +
+                $('#id_roster_tight_ends').val() +
+                $('#id_roster_flex_running_back_wide_receiver').val() +
+                $('#id_roster_flex_running_back_wide_receiver_tight_end').val() + 
+                $('#id_roster_flex_wide_receiver_tight_end').val()) > 0;
+              $('.rece').toggle(receiving_settings_needed);
+
+              // toggle individual settings
+              var individual_settings_needed =
+                ($('#id_roster_offensive_players').val() + 
+                $('#id_roster_quarterbacks').val() +
+                $('#id_roster_running_backs').val() +
+                $('#id_roster_wide_receivers').val() +
+                $('#id_roster_tight_ends').val() +
+                $('#id_roster_flex_running_back_wide_receiver').val() +
+                $('#id_roster_flex_running_back_wide_receiver_tight_end').val() + 
+                $('#id_roster_flex_wide_receiver_tight_end').val()) > 0;
+              $('.indi').toggle(individual_settings_needed); 
+
+              // toggle dst settings
+              var defense_on_roster = $('#id_roster_team_defense_special_teams').val() > 0;
+              $('.dst_').toggle(defense_on_roster);
+              if (defense_on_roster)
+              {
+                // show or hide yahoo/espn points against settings
+                var yahoo_league = $('#id_league_hosting_site').val() == 'yahoo';
+                $('label[for="id_dst_14_to_20_points_allowed"]').toggle(yahoo_league);
+                $('#id_dst_14_to_20_points_allowed').toggle(yahoo_league);
+                $('label[for="id_dst_21_to_27_points_allowed"]').toggle(yahoo_league);
+                $('#id_dst_21_to_27_points_allowed').toggle(yahoo_league);                  
+                
+                $('label[for="id_dst_14_to_17_points_allowed"]').toggle(!yahoo_league);
+                $('#id_dst_14_to_17_points_allowed').toggle(!yahoo_league);
+                $('label[for="id_dst_18_to_21_points_allowed"]').toggle(!yahoo_league);
+                $('#id_dst_18_to_21_points_allowed').toggle(!yahoo_league);
+                $('label[for="id_dst_22_to_27_points_allowed"]').toggle(!yahoo_league);
+                $('#id_dst_22_to_27_points_allowed').toggle(!yahoo_league);
+              }
+
+              // toggle kicking settings
+              var kicker_on_roster = $('#id_roster_kickers').val() > 0;
+              $('.kick').toggle(kicker_on_roster);
+
+              // toggle idp settings
+              var IDP_on_roster = $('#id_roster_defensive_players').val() > 0;
+              $('.idp_').toggle(IDP_on_roster);
+
+              // toggle punter settings  
+            }
+
+            function set_null_fields_to_zero() {
+              $('#league_settings *').filter(':input').each(function(){
+                  if ($(this).attr("id") == 'id_title'|| $(this).attr("id") == 'id_league_hosting_site') {
+                    return; // continue
+                  };
+                  
+                  if ($(this).val() == '') {
+                    $(this).val(0);
+                  };        
+              });
+            }
+        }); //End Ready
+  </script>
+{% endblock javascript %}

@@ -1,0 +1,40 @@
+<div class="col-md-6 col-lg-4 mb-4">
+    <div class="card listing-preview">
+        <div class="card-body">
+        <div class="listing-heading text-center">
+            <h4 class="text-primary">{{ listing.title }}</h4>
+            <p>{{ listing.league_hosting_site }}</p>
+        </div>
+        <hr>
+        <div class="row py-2 text-secondary">
+            <div class="col-6">
+            <i class="fas fa-football-ball"></i> PPR: 
+            {% if listing.receiving_receptions > 0 %}
+                <i class="fas fa-check"></i>
+            {% else %}
+                <i class="fas fa-times"></i>
+            {% endif %}</div>
+            <div class="col-6">
+            <i class="fas fa-football-ball"></i> Quarterback Touchdown: {{ listing.passing_touchdowns }}
+            </div>
+        </div>
+        <div class="row py-2 text-secondary">
+            <div class="col-6">
+            <i class="fas fa-football-ball"></i> Rushing Touchdown: {{ listing.rushing_touchdowns }}
+            </div>
+            <div class="col-6">
+            <i class="fas fa-football-ball"></i> Receiving Touchdown: {{ listing.receiving_touchdowns }}
+            </div>
+        </div>
+        <hr>
+        <div class="row py-2 text-secondary">
+            <div class="col-6">
+            <i class="fas fa-users"></i> Positions </br>
+            {% include 'partials/_footballPositionsString.html' with league_settings=listing %}
+            </div>
+        </div>
+        <hr>
+        <a href="{% url 'fantaSheet' listing.id %}" class="btn btn-primary btn-block">FantaSheet</a>
+        </div>
+    </div>
+</div>

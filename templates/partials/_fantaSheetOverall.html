@@ -1,0 +1,38 @@
+<table class="tableFantaSheetSimple">
+    <tr>
+      <th class="centered">
+        FSR
+      </th>
+      <th class="centered">
+        PR
+      </th>
+      <th class="left">
+        Name Team Bye
+      </th>
+      <th class="centered">
+        PV
+      </th>
+      <th class="centered">
+        WP
+      </th>
+    </tr>
+  {% for player in players %}
+    <tr>
+      <td class="centered">
+        {{ player.overall_rank }}
+      </td>
+      <td class="centered">
+        {{ player.position | upper }}{{ player.position_rank }}
+      </td>
+      <td class="left">
+        {{ player.name }} {{ player.team }} {{ player.bye_week }}
+      </td>
+      <td class="centered">
+        {{ player.value | floatformat:2 }}
+      </td>
+      <td class="centered">
+        {{ player.projected_points | floatformat:2 }}
+      </td>
+    </tr>
+  {% endfor %}
+</table>

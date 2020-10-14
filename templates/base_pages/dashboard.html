@@ -1,0 +1,30 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} | My FantaSheets{% endblock title %}
+{% block content %}
+<!-- Listings -->
+  <section id="listings" class="py-5">
+    <div class="container">
+      <img src="{% static 'img/myFantaSheets.png' %}" class="myFantaSheets" alt="">
+      </br>
+      <a href="{% url 'create' %}" class="btn btn-primary">Create New</a>
+      </br>
+      </br>
+      <div class="row">
+        {% if league_settings %}
+          {% for current_league_settings in league_settings %}  
+              {% include 'partials/_listing.html' with listing=current_league_settings %}
+          {% endfor %}
+        {% else %}
+            <div class="col-md-12">
+                <h4>Your League Settings Will Be Found Here</h4>
+            </div>
+        {% endif %}      
+      </div>
+      </br>
+      {% if league_settings %}
+        <a href="{% url 'create' %}" class="btn btn-primary">Create New</a>
+      {% endif %}
+    </div>
+  </section>
+{% endblock content %}

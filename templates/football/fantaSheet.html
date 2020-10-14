@@ -1,1 +1,22 @@
-<h1> football fantasheet </h1>
+{% extends "base.html" %}
+{% load static %}
+{% block title %} | {{ league_settings.title }}{% endblock title %}
+{% block content %}
+    <div class='fantaSheet'>
+        <h3 class="centered noPadding">
+            {% comment %} <a target="_blank" href="https://csumb.edu/csonline"><img class="ad" src="{% static 'img/csumb cst logo round.png' %}" /></a> <img class="printAd" src="{% static 'img/preNotions Ad.png' %}" /><span class="fantaSheetName">{{ league_settings.title }} &nbsp;</span><img class="fantaSheetLogo" src="{% static 'img/FantaSheets Small No Back.png' %}" /> {% endcomment %}
+            <span class="fantaSheetName">{{ league_settings.title }}</span>
+        </h3>
+        {% comment %} <p class="updated">Last Updated: @ViewBag.updatedDate / All Stats are Projections</p> {% endcomment %}
+        {% comment %} <p class="updated"><sup>c</sup> = Contract Year / <sup>r</sup> = Rookie / <sup>sspd-#</sup> = Suspended - # Games / <sup>inj-#</sup> = Injured - Proj # Games Missed</p> {% endcomment %}
+        <p class="updated">FSR - FantaSheet Rank | PR - Position Rank | PV - Player Value | WP - Weekly Projected</p>
+            <div id="simpleOverall" class="columns">
+
+                {% include 'partials/_fantaSheetOverall.html' with players=fantaSheet_values|slice:':100' %}
+                {% include 'partials/_fantaSheetOverall.html' with players=fantaSheet_values|slice:'100:200' %}
+                {% include 'partials/_fantaSheetOverall.html' with players=fantaSheet_values|slice:'200:300' %}
+
+            </div>
+    </div>
+{% endblock content %}
+
