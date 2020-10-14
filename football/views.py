@@ -1,4 +1,4 @@
-from .forms import LeagueSettingsForm
+from .forms import LeagueSettingsForm, AnonymousLeagueSettingsForm
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.contrib import messages
@@ -8,7 +8,6 @@ from .services import calculate_fantaSheet
 
 def index(request):
     return render(request, 'football/fantaSheets.html')
-
 
 def fantaSheet(request, fantaSheet_id):
     league_settings = LeagueSettings.objects.only('id').get(id=fantaSheet_id)
@@ -22,6 +21,23 @@ def fantaSheet(request, fantaSheet_id):
 
     return render(request, 'football/fantaSheet.html', context)
 
+def anonymous_fantaSheet(request):
+
+    if request.method == 'POST':
+        league_settings_form = AnonymousLeagueSettingsForm(request.POST)
+        if league_settings_form.is_valid():
+            clean_settings = league_settings_form.save(commit=False)
+        else:
+            print(league_settings_form.errors)
+            # messages.error(request, league_settings_form.errors)
+
+    print('quarterbacks', league_settings_form['roster_quarterbacks'].value())
+
+    # league_settings = LeagueSettings()
+
+    # print(league_settings_form)
+
+    return redirect('index')
 
 @login_required
 def create(request):
