@@ -78,6 +78,7 @@ def calculate_fantaSheet(league_settings):
             projections=player_projections)
         players.append(player)
 
+    print(players)
     ranked_and_sorted_players = _rank_and_sort_players(players, league_settings)
 
     return ranked_and_sorted_players
@@ -98,7 +99,7 @@ def _calculate_dst_points_for_yards_or_points(setting_value, low, high, projecte
 
     # games calculations based on normal deviation of 16 games
     normal_games = 10.912
-    high_or_low_games = 2.176
+    high_or_low_games = 2.208
     extreme_games = .336
 
     points = 0.0
@@ -488,11 +489,8 @@ def _rank_and_sort_players(players, league_settings):
 
 def _set_player_overall_ranks(sorted_players):
 
-    rank = 1
-
-    for player in sorted_players:
+    for rank, player in enumerate(sorted_players, start=1):
         player.overall_rank = rank
-        rank += 1
 
     return sorted_players
 
