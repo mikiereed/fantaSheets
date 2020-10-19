@@ -16,7 +16,7 @@
               {% if user.is_authenticated %}
                 <input type="hidden" name="owner" value="{{ user.id }}" id="id_owner">
               {% else %}
-                <input type="hidden" name="owner" value="0" id="id_owner">
+                <input type="hidden" name="owner" value="1" id="id_owner">
               {% endif %}
               <!-- Form Row 1 -->
               <div class="form-row">
@@ -24,13 +24,13 @@
                   <label class="sr-only">Teams</label>
                   <select name="number_of_teams" class="form-control" id="id_number_of_teams">
                     <option selected="true" disabled="disabled">Teams</option>
-                    <option value="0">4</option>
-                    <option value="1">6</option>
-                    <option value="2">8</option>
-                    <option value="3">10</option>
-                    <option value="0">12</option>
-                    <option value="1">14</option>
-                    <option value="2">16</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="12">12</option>
+                    <option value="14">14</option>
+                    <option value="16">16</option>
                   </select>
                 </div>
 
@@ -61,12 +61,12 @@
                     <option value="roster_flex_running_back_wide_receiver">Flex RB/WR</option>
                     <option value="roster_flex_running_back_wide_receiver_tight_end">Flex RB/WR/TE</option>
                     <option value="roster_flex_wide_receiver_tight_end">Flex WR/TE</option>
-                    <option value="roster_offensive_player">Offensive Player</option>
+                    <option value="roster_offensive_players">Offensive Player</option>
                   </select>
                   <input type="hidden" name="roster_flex_running_back_wide_receiver" value="0" id="id_roster_flex_running_back_wide_receiver">
                   <input type="hidden" name="roster_flex_running_back_wide_receiver_tight_end" value="0" id="id_roster_flex_running_back_wide_receiver_tight_end">
                   <input type="hidden" name="roster_flex_wide_receiver_tight_end" value="0" id="id_roster_flex_wide_receiver_tight_end">
-                  <input type="hidden" name="roster_offensive_player" value="0" id="id_roster_offensive_player">
+                  <input type="hidden" name="roster_offensive_players" value="0" id="id_roster_offensive_players">
                 </div>                
               </div>
               <!-- Form Row 2 -->
@@ -167,41 +167,48 @@
   <script type="text/javascript">
         $(document).ready(function () {
           $('#anonymous_fantaSheet').submit(function () {
-            // if !(roster_is_greater_than_1())
-            //   return false;
+            if (!required_fields_are_good()) {
+              return false;
+            }
             set_flex_spot();
             set_null_fields_to_zero();
             return true;
           })
 
+          function required_fields_are_good() {
+            if (!($('#id_number_of_teams').val() > 0)) {
+              alert("Please Select Number of Teams");
+              return false;
+            }
+
+            return true;
+          }
+
           function set_flex_spot() {
-            var id_roster_flex = $('#id_roster_flex').val();
-            if (id_roster_flex == roster_flex_running_back_wide_receivers) {
+            var roster_flex = $('#id_roster_flex').val();
+            if (roster_flex == 'roster_flex_running_back_wide_receiver') {
               $('#id_roster_flex_running_back_wide_receiver').val(1);
-            } else if (id_roster_flex == roster_flex_running_back_wide_receiver_tight_end) {
+            } else if (roster_flex == 'roster_flex_running_back_wide_receiver_tight_end') {
               $('#id_roster_flex_running_back_wide_receiver_tight_end').val(1);
-            } else if (id_roster_flex == roster_flex_wide_receiver_tight_end) {
+            } else if (roster_flex == 'roster_flex_wide_receiver_tight_end') {
               $('#id_roster_flex_wide_receiver_tight_end').val(1);
-            } else if (id_roster_flex == roster_offensive_player) {
-              $('#id_roster_offensive_player').val(1);
+            } else if (roster_flex == 'roster_offensive_players') {
+              $('#id_roster_offensive_players').val(1);
+            } else if (roster_flex == null) {
+              $('#id_roster_flex').val('none');
             }
           }
 
           function set_null_fields_to_zero() {
-            $('#anonymous_fantaSheet *').filter(':input').each(function(){
-                if ($(this).attr("id") == 'id_title') {
-                  $(this).val('Simple FantaSheet');
-                  return; // continue
-                };
-
-                if ($(this).attr("id") == 'id_league_hosting_site') {
-                  $(this).val('other');
-                  return; // continue
-                };
-                
-                if ($(this).val() == '') {
+            $('#anonymous_fantaSheet *').filter(':input').each(function(){                   
+                var value = $(this).val();
+                if ($(this).val() == null) {
                   $(this).val(0);
-                };        
+                  if ($(this).attr('id') == 'id_passing_touchdowns'){
+                    $(this).val(4);
+                    alert($(this).attr('id') + ' ' + value + ':' + $(this).val());
+                  }
+                };       
             });
           }
         }); //End Ready

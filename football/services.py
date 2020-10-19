@@ -475,15 +475,15 @@ def _rank_and_sort_players(players, league_settings):
     
     sorted_players = sorted(players, key= attrgetter('projected_points'), reverse=True)
 
-    sorted_players = _set_player_position_ranks(sorted_players)
+    _set_player_position_ranks(sorted_players)
 
     position_values = _get_position_values(sorted_players, league_settings)
 
-    sorted_players = _set_player_values(sorted_players, position_values)
+    _set_player_values(sorted_players, position_values)
 
     sorted_players = sorted(players, key= attrgetter('value'), reverse=True)
 
-    sorted_players = _set_player_overall_ranks(sorted_players)
+    _set_player_overall_ranks(sorted_players)
 
     return sorted_players
 
@@ -496,7 +496,6 @@ def _set_player_overall_ranks(sorted_players):
 
 def _set_player_position_ranks(sorted_players):
 
-    # positions = Position.objects.only('abbreviation')
     positions = Position.objects.values_list('abbreviation', flat=True)
 
     assert positions
