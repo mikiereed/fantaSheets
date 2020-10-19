@@ -149,7 +149,7 @@ img {
 
 .tableFantaSheet,
 .tableFantaSheetSimple {
-    /* font-size: 10px; */
+    font-size: 14px;
     /* table-layout: fixed; */
     width: 100%;
     border-collapse: collapse;
@@ -263,9 +263,9 @@ h4.noPadding {
 
 .fantaSheet {
     min-height: 90%;
-    margin: 0 5% 0 5%;
+    margin: 0 4% 0 4%;
     background-color: #ffffff;
-    padding: 1% 5% 2% 5%;
+    padding: 1% 4% 2% 4%;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }

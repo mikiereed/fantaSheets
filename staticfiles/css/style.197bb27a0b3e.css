@@ -32,7 +32,7 @@ img {
 }
 
 #showcase {
-    background-image: url("../img/stadium_background.jpg");
+    background-image: url("../img/stadium_background.cdba9eb59565.jpg");
     background-repeat: no-repeat;
     background-position: center top;
     background-size: cover;
@@ -60,7 +60,7 @@ img {
 }
 
 #services {
-    background: url(../img/fantaSheets_small_no_back.png) no-repeat top center fixed/cover;
+    background: url("../img/fantaSheets_small_no_back.06ce1fca7b4e.png") no-repeat top center fixed/cover;
     min-height: 300px;
     position: relative;
     overflow: hidden;
@@ -77,7 +77,7 @@ img {
 }
 
 #showcase-inner {
-    background: url(../img/fantaSheets_small_no_back.png) no-repeat top center fixed/cover;
+    background: url("../img/fantaSheets_small_no_back.06ce1fca7b4e.png") no-repeat top center fixed/cover;
     position: relative;
     overflow: hidden;
     min-height: 200px;
@@ -263,9 +263,9 @@ h4.noPadding {
 
 .fantaSheet {
     min-height: 90%;
-    margin: 0 4% 0 4%;
+    margin: 0 5% 0 5%;
     background-color: #ffffff;
-    padding: 1% 4% 2% 4%;
+    padding: 1% 5% 2% 5%;
     border-bottom-left-radius: 6px;
     border-bottom-right-radius: 6px;
 }
