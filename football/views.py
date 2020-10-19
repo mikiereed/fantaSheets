@@ -27,11 +27,16 @@ def anonymous_fantaSheet(request):
         league_settings_form = AnonymousLeagueSettingsForm(request.POST)
         if league_settings_form.is_valid():
             clean_settings = league_settings_form.save(commit=False)
+            print('yay')
         else:
             print(league_settings_form.errors)
             # messages.error(request, league_settings_form.errors)
 
     print('quarterbacks', league_settings_form['roster_quarterbacks'].value())
+    print('running backs', league_settings_form['roster_running_backs'].value())
+    print('wide receivers', league_settings_form['roster_wide_receivers'].value())
+    print('tight_ends', league_settings_form['roster_tight_ends'].value())
+    print('offensive_players', league_settings_form['roster_offensive_players'].value())
 
     # league_settings = LeagueSettings()
 
@@ -46,19 +51,7 @@ def create(request):
         if league_settings_form.is_valid():
             new_settings = league_settings_form.save(commit=False)
             new_settings.owner_id = request.POST['owner']
-            new_settings.roster_defensive_tackles = 0
-            new_settings.roster_defensive_ends = 0
-            new_settings.roster_defensive_lines = 0
-            new_settings.roster_defensive_players = 0
-            new_settings.roster_linebackers = 0
-            new_settings.roster_edge_rushers = 0
-            new_settings.roster_defensive_backs = 0
-            new_settings.roster_cornerbacks = 0
-            new_settings.roster_safeties = 0
-            new_settings.roster_punters = 0
-            new_settings.roster_head_coaches = 0
-            new_settings.roster_team_quarterbacks = 0
-            new_settings.roster_injured_reserve_spots = 0
+            __set_roster_nulls_to_zero(new_settings)
             new_settings.save()
             messages.success(request, 'fantaSheet Settings Saved')
             return redirect('dashboard')
@@ -68,3 +61,17 @@ def create(request):
         league_settings_form = LeagueSettingsForm(use_required_attribute=False)
     return render(request, 'football/create.html',
                   {'league_settings_form': league_settings_form})
+
+def __set_roster_nulls_to_zero(settings_list):
+
+    settings_list_attributes = [attr for attr in dir(settings_list) if attr.startswith('roster_')]
+    print(settings_list_attributes)
+    for attribute in settings_list_attributes:
+        setting_value = getattr(settings_list, attribute)
+        if (setting_value is None):
+            setattr(
+                settings_list,
+                attribute,
+                0
+            )
+    

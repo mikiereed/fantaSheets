@@ -61,12 +61,12 @@
                     <option value="roster_flex_running_back_wide_receiver">Flex RB/WR</option>
                     <option value="roster_flex_running_back_wide_receiver_tight_end">Flex RB/WR/TE</option>
                     <option value="roster_flex_wide_receiver_tight_end">Flex WR/TE</option>
-                    <option value="roster_offensive_player">Offensive Player</option>
+                    <option value="roster_offensive_players">Offensive Player</option>
                   </select>
                   <input type="hidden" name="roster_flex_running_back_wide_receiver" value="0" id="id_roster_flex_running_back_wide_receiver">
                   <input type="hidden" name="roster_flex_running_back_wide_receiver_tight_end" value="0" id="id_roster_flex_running_back_wide_receiver_tight_end">
                   <input type="hidden" name="roster_flex_wide_receiver_tight_end" value="0" id="id_roster_flex_wide_receiver_tight_end">
-                  <input type="hidden" name="roster_offensive_player" value="0" id="id_roster_offensive_player">
+                  <input type="hidden" name="roster_offensive_players" value="0" id="id_roster_offensive_players">
                 </div>                
               </div>
               <!-- Form Row 2 -->
@@ -175,15 +175,15 @@
           })
 
           function set_flex_spot() {
-            var id_roster_flex = $('#id_roster_flex').val();
-            if (id_roster_flex == roster_flex_running_back_wide_receivers) {
+            var roster_flex = $('#id_roster_flex').val();
+            if (roster_flex == 'roster_flex_running_back_wide_receiver') {
               $('#id_roster_flex_running_back_wide_receiver').val(1);
-            } else if (id_roster_flex == roster_flex_running_back_wide_receiver_tight_end) {
+            } else if (roster_flex == 'roster_flex_running_back_wide_receiver_tight_end') {
               $('#id_roster_flex_running_back_wide_receiver_tight_end').val(1);
-            } else if (id_roster_flex == roster_flex_wide_receiver_tight_end) {
+            } else if (roster_flex == 'roster_flex_wide_receiver_tight_end') {
               $('#id_roster_flex_wide_receiver_tight_end').val(1);
-            } else if (id_roster_flex == roster_offensive_player) {
-              $('#id_roster_offensive_player').val(1);
+            } else if (roster_flex == 'roster_offensive_players') {
+              $('#id_roster_offensive_players').val(1);
             }
           }
 
@@ -191,11 +191,13 @@
             $('#anonymous_fantaSheet *').filter(':input').each(function(){
                 if ($(this).attr("id") == 'id_title') {
                   $(this).val('Simple FantaSheet');
+                  alert('title');
                   return; // continue
                 };
 
                 if ($(this).attr("id") == 'id_league_hosting_site') {
                   $(this).val('other');
+                  alert('league hosting');
                   return; // continue
                 };
                 
