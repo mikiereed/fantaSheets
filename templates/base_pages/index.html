@@ -16,7 +16,7 @@
               {% if user.is_authenticated %}
                 <input type="hidden" name="owner" value="{{ user.id }}" id="id_owner">
               {% else %}
-                <input type="hidden" name="owner" value="0" id="id_owner">
+                <input type="hidden" name="owner" value="1" id="id_owner">
               {% endif %}
               <!-- Form Row 1 -->
               <div class="form-row">
@@ -24,13 +24,13 @@
                   <label class="sr-only">Teams</label>
                   <select name="number_of_teams" class="form-control" id="id_number_of_teams">
                     <option selected="true" disabled="disabled">Teams</option>
-                    <option value="0">4</option>
-                    <option value="1">6</option>
-                    <option value="2">8</option>
-                    <option value="3">10</option>
-                    <option value="0">12</option>
-                    <option value="1">14</option>
-                    <option value="2">16</option>
+                    <option value="4">4</option>
+                    <option value="6">6</option>
+                    <option value="8">8</option>
+                    <option value="10">10</option>
+                    <option value="12">12</option>
+                    <option value="14">14</option>
+                    <option value="16">16</option>
                   </select>
                 </div>
 
@@ -188,19 +188,7 @@
           }
 
           function set_null_fields_to_zero() {
-            $('#anonymous_fantaSheet *').filter(':input').each(function(){
-                if ($(this).attr("id") == 'id_title') {
-                  $(this).val('Simple FantaSheet');
-                  alert('title');
-                  return; // continue
-                };
-
-                if ($(this).attr("id") == 'id_league_hosting_site') {
-                  $(this).val('other');
-                  alert('league hosting');
-                  return; // continue
-                };
-                
+            $('#anonymous_fantaSheet *').filter(':input').each(function(){                
                 if ($(this).val() == '') {
                   $(this).val(0);
                 };        
