@@ -1,4 +1,5 @@
 /fantaSheets/local_settings.py
+/fantaSheets/settings/base.py
 /fantaSheets/tmp/
 /fantaSheets/media/
 venv
